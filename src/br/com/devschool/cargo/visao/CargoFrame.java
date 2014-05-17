@@ -335,10 +335,11 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
             
             getServico().salvar(getEntidade());
             MensagemUtil.addMensagemSalvoSucesso();
+            
+            limparFormulario(jPanelFormulario);
         } catch (Exception ex) {
             MensagemUtil.addMensagemErro(ex.getMessage());
         }
-        limparFormulario(jPanelFormulario);
     }
     
     /**

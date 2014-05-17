@@ -33,7 +33,7 @@ public class TerminalDAO extends DAO<Terminal> {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQLNextal = "SELECT NEXTVAL('terminal_id_terminal_seq')";
+            String SQLNextal = "SELECT NEXTVAL('pdv.terminal_id_terminal_seq')";
             PreparedStatement ps = conn.prepareStatement(SQLNextal);
             ResultSet rs = ps.executeQuery();
             

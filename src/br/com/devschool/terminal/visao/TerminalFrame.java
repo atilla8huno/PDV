@@ -330,10 +330,11 @@ public class TerminalFrame extends JFrame implements IFrame<Terminal> {
             
             getServico().salvar(getEntidade());
             MensagemUtil.addMensagemSalvoSucesso();
+            
+            limparFormulario(jPanelFormulario);
         } catch (Exception ex) {
             MensagemUtil.addMensagemErro(ex.getMessage());
         }
-        limparFormulario(jPanelFormulario);
     }
     
     /**
