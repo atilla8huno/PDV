@@ -1,10 +1,9 @@
-package br.com.devschool.cargo.visao;
+package br.com.devschool.forma_pagamento.visao;
 
-import br.com.devschool.entidade.Cargo;
-import br.com.devschool.cargo.servico.CargoServico;
+import br.com.devschool.entidade.FormaPagamento;
+import br.com.devschool.forma_pagamento.servico.FormaPagamentoServico;
 import br.com.devschool.util.FrameUtil;
 import br.com.devschool.util.MensagemUtil;
-import br.com.devschool.util.enumerador.PerfilEnum;
 import br.com.devschool.util.template.IFrame;
 import java.awt.Container;
 import java.util.ArrayList;
@@ -14,34 +13,31 @@ import javax.swing.JFrame;
 /**
  * @author @atilla8huno
  */
-public class CargoFrame extends JFrame implements IFrame<Cargo> {
+public class FormaPagamentoFrame extends JFrame implements IFrame<FormaPagamento> {
 
-    private Cargo entidade;
-    private CargoServico servico;
-    private CargoTableModel modeloTabela;
-    private List<Cargo> cargos;
+    private FormaPagamento entidade;
+    private FormaPagamentoServico servico;
+    private FormaPagamentoTableModel modeloTabela;
+    private List<FormaPagamento> formaPagamentos;
     
     /** Atributos de filtros */
-    private String nome;
-    private String perfil;
+    private String descricao;
     
     /**
      * Método construtor
      */
-    public CargoFrame() {
+    public FormaPagamentoFrame() {
         initComponents();
         
-        cargos = new ArrayList<Cargo>();
-        modeloTabela = new CargoTableModel(cargos);
-        jTableCargos.setModel(modeloTabela);
+        formaPagamentos = new ArrayList<FormaPagamento>();
+        modeloTabela = new FormaPagamentoTableModel(formaPagamentos);
+        jTableFormaPagamentos.setModel(modeloTabela);
         
         try {
-            servico = new CargoServico();
+            servico = new FormaPagamentoServico();
         } catch (Exception ex) {
             MensagemUtil.addMensagemErro(ex.getMessage());
         }
-        
-        preencherComboBoxPerfil();
     }
 
     @SuppressWarnings("unchecked")
@@ -57,9 +53,7 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
         jButtonFechar = new javax.swing.JButton();
         jPanelCampos = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextFieldNomeCargo = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jComboBoxPerfil = new javax.swing.JComboBox();
+        jTextFieldDescricaoFormaPagamento = new javax.swing.JTextField();
         jPanelConsulta = new javax.swing.JPanel();
         jPanelAcaoConsulta = new javax.swing.JPanel();
         jButtonEditar = new javax.swing.JButton();
@@ -67,11 +61,9 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
         jButtonLimparConsulta = new javax.swing.JButton();
         jPanelResultados = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTableCargos = new javax.swing.JTable();
+        jTableFormaPagamentos = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jTextFieldNomeCargoFiltro = new javax.swing.JTextField();
-        jComboBoxPerfilFiltro = new javax.swing.JComboBox();
+        jTextFieldDescricaoFormaPagamentoFiltro = new javax.swing.JTextField();
         jButtonPesquisar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -121,18 +113,11 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
         jPanelCampos.setBackground(new java.awt.Color(255, 255, 255));
         jPanelCampos.setLayout(null);
 
-        jLabel1.setText("Nome do Cargo: *");
+        jLabel1.setText("Descricao da Forma de Pagamento: *");
         jPanelCampos.add(jLabel1);
-        jLabel1.setBounds(30, 20, 100, 20);
-        jPanelCampos.add(jTextFieldNomeCargo);
-        jTextFieldNomeCargo.setBounds(30, 40, 330, 20);
-
-        jLabel2.setText("Perfil: *");
-        jPanelCampos.add(jLabel2);
-        jLabel2.setBounds(390, 20, 110, 20);
-
-        jPanelCampos.add(jComboBoxPerfil);
-        jComboBoxPerfil.setBounds(390, 40, 240, 20);
+        jLabel1.setBounds(30, 20, 250, 20);
+        jPanelCampos.add(jTextFieldDescricaoFormaPagamento);
+        jTextFieldDescricaoFormaPagamento.setBounds(30, 40, 330, 20);
 
         jPanelFormulario.add(jPanelCampos);
         jPanelCampos.setBounds(10, 10, 790, 440);
@@ -180,7 +165,7 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
         jPanelResultados.setBackground(new java.awt.Color(255, 255, 255));
         jPanelResultados.setLayout(null);
 
-        jTableCargos.setModel(new javax.swing.table.DefaultTableModel(
+        jTableFormaPagamentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -188,23 +173,16 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
 
             }
         ));
-        jScrollPane1.setViewportView(jTableCargos);
+        jScrollPane1.setViewportView(jTableFormaPagamentos);
 
         jPanelResultados.add(jScrollPane1);
         jScrollPane1.setBounds(30, 92, 730, 340);
 
-        jLabel3.setText("Nome do Cargo:");
+        jLabel3.setText("Descrição da Forma de Pagamento:");
         jPanelResultados.add(jLabel3);
-        jLabel3.setBounds(30, 20, 140, 20);
-
-        jLabel4.setText("Perfil:");
-        jPanelResultados.add(jLabel4);
-        jLabel4.setBounds(390, 20, 60, 20);
-        jPanelResultados.add(jTextFieldNomeCargoFiltro);
-        jTextFieldNomeCargoFiltro.setBounds(30, 40, 330, 20);
-
-        jPanelResultados.add(jComboBoxPerfilFiltro);
-        jComboBoxPerfilFiltro.setBounds(390, 40, 240, 20);
+        jLabel3.setBounds(30, 20, 230, 20);
+        jPanelResultados.add(jTextFieldDescricaoFormaPagamentoFiltro);
+        jTextFieldDescricaoFormaPagamentoFiltro.setBounds(30, 40, 330, 20);
 
         jButtonPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/search.png"))); // NOI18N
         jButtonPesquisar.addActionListener(new java.awt.event.ActionListener() {
@@ -282,18 +260,18 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CargoFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormaPagamentoFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CargoFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormaPagamentoFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CargoFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormaPagamentoFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CargoFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormaPagamentoFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CargoFrame().setVisible(true);
+                new FormaPagamentoFrame().setVisible(true);
             }
         });
     }
@@ -305,12 +283,8 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
     private javax.swing.JButton jButtonLimparConsulta;
     private javax.swing.JButton jButtonPesquisar;
     private javax.swing.JButton jButtonSalvar;
-    private javax.swing.JComboBox jComboBoxPerfil;
-    private javax.swing.JComboBox jComboBoxPerfilFiltro;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanelAcaoConsulta;
     private javax.swing.JPanel jPanelAcaoFormulario;
     private javax.swing.JPanel jPanelCampos;
@@ -320,9 +294,9 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
     private javax.swing.JPanel jPanelResultados;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPaneAbas;
-    private javax.swing.JTable jTableCargos;
-    private javax.swing.JTextField jTextFieldNomeCargo;
-    private javax.swing.JTextField jTextFieldNomeCargoFiltro;
+    private javax.swing.JTable jTableFormaPagamentos;
+    private javax.swing.JTextField jTextFieldDescricaoFormaPagamento;
+    private javax.swing.JTextField jTextFieldDescricaoFormaPagamentoFiltro;
     // End of variables declaration//GEN-END:variables
 
     /**
@@ -353,6 +327,8 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
             getServico().excluir(getEntidade());
             pesquisar();
             MensagemUtil.addMensagemExcluidoSucesso();
+            
+            limparFormulario(jPanelFormulario);
         } catch (Exception ex) {
             MensagemUtil.addMensagemErro(ex.getMessage());
         }
@@ -373,30 +349,14 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
     }
     
     /**
-     * Este método percore os valores do PerfilEnum e popula a combobox.
-     */
-    private void preencherComboBoxPerfil() {
-        jComboBoxPerfil.removeAllItems();
-        jComboBoxPerfilFiltro.removeAllItems();
-        jComboBoxPerfil.addItem(".:: SELECIONE ::.");
-        jComboBoxPerfilFiltro.addItem(".:: SELECIONE ::.");
-        
-        for (PerfilEnum perfil : PerfilEnum.values()) {
-            jComboBoxPerfil.addItem(perfil.toString().toLowerCase());
-            jComboBoxPerfilFiltro.addItem(perfil.toString().toLowerCase());
-        }
-    }
-    
-    /**
      * Este método pesquisa os registros do banco e exibe-os na JTable.
      */
     @Override
     public void pesquisar() {
         try {
-            nome = jTextFieldNomeCargoFiltro.getText();
-            perfil = jComboBoxPerfilFiltro.getSelectedIndex() == 0 ? "" : jComboBoxPerfilFiltro.getSelectedItem().toString();
+            descricao = jTextFieldDescricaoFormaPagamentoFiltro.getText();
             
-            modeloTabela.setCargos(getServico().consultarPor(nome, perfil));
+            modeloTabela.setFormaPagamentos(getServico().consultarPor(descricao));
         } catch (Exception e) {
             MensagemUtil.addMensagemErro(e.getMessage());
         }
@@ -407,7 +367,7 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
      */
     @Override
     public boolean isValidarCamposObrigatorios() {
-        if (jTextFieldNomeCargo.getText().equals("") || jComboBoxPerfil.getSelectedIndex() == 0) {
+        if (jTextFieldDescricaoFormaPagamento.getText().equals("")) {
             marcarCamposObrigatorios();
             throw new IllegalArgumentException("É necessário preencher os campos obrigatórios!");
         } else {
@@ -420,8 +380,7 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
      */
     @Override
     public void marcarCamposObrigatorios() {
-       jTextFieldNomeCargo.setBorder(FrameUtil.BORDA_VERMELHA);
-       jComboBoxPerfil.setBorder(FrameUtil.BORDA_VERMELHA);
+       jTextFieldDescricaoFormaPagamento.setBorder(FrameUtil.BORDA_VERMELHA);
     }
     
     /**
@@ -432,9 +391,8 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
         FrameUtil.limparCamposDoContainer(formulario);
         
         entidade = null;
-        jTextFieldNomeCargo.setBorder(FrameUtil.BORDA_PADRAO);
-        jComboBoxPerfil.setBorder(FrameUtil.BORDA_PADRAO);
-        jTextFieldNomeCargo.requestFocus();
+        jTextFieldDescricaoFormaPagamento.setBorder(FrameUtil.BORDA_PADRAO);
+        jTextFieldDescricaoFormaPagamento.requestFocus();
     }
     
     /**
@@ -447,30 +405,22 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
     }
 
     /**
-     * Este método preenche a entidade Cargo de acordo com os campos da tela.
+     * Este método preenche a entidade FormaPagamento de acordo com os campos da tela.
      */
     @Override
     public void preencherEntidade() {
         if (isValidarCamposObrigatorios()) {
-            getEntidade().setNome(jTextFieldNomeCargo.getText().toUpperCase());
-
-            for (PerfilEnum perfil : PerfilEnum.values()) {
-                if (perfil.toString().toLowerCase().equals(jComboBoxPerfil.getSelectedItem())) {
-                    getEntidade().setPerfil(perfil.toString().toLowerCase());
-                    break;
-                }
-            }
+            getEntidade().setDescricao(jTextFieldDescricaoFormaPagamento.getText());
         }
     }
 
     /**
-     * Este método preenche o formulário de acordo com a entidade Cargo.
+     * Este método preenche o formulário de acordo com a entidade FormaPagamento.
      */
     @Override
-    public void preencherFormulario(Cargo cargo) {
-        if (cargo != null) {
-            jTextFieldNomeCargo.setText(cargo.getNome());
-            jComboBoxPerfil.setSelectedItem(cargo.getPerfil().toString());
+    public void preencherFormulario(FormaPagamento formaPagamento) {
+        if (formaPagamento != null) {
+            jTextFieldDescricaoFormaPagamento.setText(formaPagamento.getDescricao());
         }
     }
 
@@ -479,10 +429,10 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
      */
     @Override
     public void obterLinhaSelecionada() {
-        if(jTableCargos.getSelectedRow() >= 0){
-            int row = jTableCargos.getSelectedRow();
+        if(jTableFormaPagamentos.getSelectedRow() >= 0){
+            int row = jTableFormaPagamentos.getSelectedRow();
         
-            entidade = modeloTabela.getCargos().get(row);
+            entidade = modeloTabela.getFormaPagamentos().get(row);
             preencherFormulario(entidade);
         } else {
             throw new IllegalArgumentException("É necessário selecionar algum registro na tabela antes de efetuar alguma ação!");
@@ -491,21 +441,21 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
     
     /* GETTERS and SETTERS */
     
-    public Cargo getEntidade() {
+    public FormaPagamento getEntidade() {
         if (entidade == null) {
-            entidade = new Cargo();
+            entidade = new FormaPagamento();
         }
         return entidade;
     }
 
-    public void setEntidade(Cargo entidade) {
+    public void setEntidade(FormaPagamento entidade) {
         this.entidade = entidade;
     }
 
-    public CargoServico getServico() {
+    public FormaPagamentoServico getServico() {
         if (servico == null) {
             try {
-                servico = new CargoServico();
+                servico = new FormaPagamentoServico();
             } catch (Exception ex) {
                 MensagemUtil.addMensagemErro(ex.getMessage());
             }

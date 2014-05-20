@@ -376,7 +376,7 @@ public class TerminalFrame extends JFrame implements IFrame<Terminal> {
             numero = Integer.parseInt(jTextFieldNumeroTerminalFiltro.getText().equals("") ? "0" : jTextFieldNumeroTerminalFiltro.getText());
             status = jCheckBoxStatusTerminalFiltro.isSelected();
             
-            modeloTabela.setTerminals(getServico().listarPorNumeroStatus(numero, status));
+            modeloTabela.setTerminals(getServico().consultarPor(numero, status));
         } catch (Exception e) {
             MensagemUtil.addMensagemErro(e.getMessage());
         }

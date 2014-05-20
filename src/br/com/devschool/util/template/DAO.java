@@ -10,5 +10,5 @@ public abstract class DAO<T extends Entidade> {
     protected abstract void excluir(Integer id) throws PDVException;
     protected abstract List<T> consultar() throws PDVException;
     protected abstract List<T> consultar(int maxResult) throws PDVException;
-    protected abstract T consultarPorId(int id) throws PDVException;
+    protected abstract T consultarPor(int id) throws PDVException;
 }

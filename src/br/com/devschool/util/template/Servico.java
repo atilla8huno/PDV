@@ -16,5 +16,5 @@ public abstract class Servico<T extends Entidade> {
     public abstract void excluir(Integer id, Connection conn) throws PDVException;
     public abstract List<T> consultar() throws PDVException;
     public abstract List<T> consultar(int maxResult) throws PDVException;
-    public abstract T consultarPorId(int id) throws PDVException;
+    public abstract T consultarPor(int id) throws PDVException;
 }

@@ -1,6 +1,6 @@
-package br.com.devschool.cargo.servico;
+package br.com.devschool.unidade_medida.servico;
 
-import br.com.devschool.entidade.Cargo;
+import br.com.devschool.entidade.UnidadeMedida;
 import br.com.devschool.util.LogUtil;
 import br.com.devschool.util.PDVException;
 import br.com.devschool.util.infra_estrutura.ConnectionFactory;
@@ -11,11 +11,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CargoDAO extends DAO<Cargo> {
+public class UnidadeMedidaDAO extends DAO<UnidadeMedida> {
 
     private Connection conn;
     
-    protected CargoDAO(Connection conn) throws PDVException {
+    protected UnidadeMedidaDAO(Connection conn) throws PDVException {
         try {
             if (conn == null || conn.isClosed()) {
                 this.conn = ConnectionFactory.getConnection();
@@ -27,13 +27,13 @@ public class CargoDAO extends DAO<Cargo> {
     }
 
     @Override
-    protected Cargo salvar(Cargo entidade) throws PDVException {
+    protected UnidadeMedida salvar(UnidadeMedida entidade) throws PDVException {
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQLNextal = "SELECT NEXTVAL('pdv.cargo_id_cargo_seq')";
+            String SQLNextal = "SELECT NEXTVAL('pdv.unidade_medida_id_unidade_medida_seq')";
             PreparedStatement ps = conn.prepareStatement(SQLNextal);
             ResultSet rs = ps.executeQuery();
             
@@ -41,12 +41,12 @@ public class CargoDAO extends DAO<Cargo> {
                 entidade.setId(rs.getInt(1));
             }
             
-            String SQL = "INSERT INTO pdv.cargo(id_cargo, nome, perfil) VALUES(?, ?, ?)";
+            String SQL = "INSERT INTO pdv.unidade_medida(id_unidade_medida, descricao, sigla) VALUES(?, ?, ?)";
             ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, entidade.getId());
-            ps.setString(2, entidade.getNome());
-            ps.setString(3, entidade.getPerfil());
+            ps.setString(2, entidade.getDescricao());
+            ps.setString(3, entidade.getSigla());
             
             ps.executeUpdate();
             
@@ -59,17 +59,17 @@ public class CargoDAO extends DAO<Cargo> {
     }
 
     @Override
-    protected Cargo atualizar(Cargo entidade) throws PDVException {
+    protected UnidadeMedida atualizar(UnidadeMedida entidade) throws PDVException {
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "UPDATE pdv.cargo SET nome = ?, perfil = ? WHERE id_cargo = ?";
+            String SQL = "UPDATE pdv.unidade_medida SET descricao = ?, sigla = ? WHERE id_unidade_medida = ?";
             PreparedStatement ps = conn.prepareStatement(SQL);
             
-            ps.setString(1, entidade.getNome());
-            ps.setString(2, entidade.getPerfil());
+            ps.setString(1, entidade.getDescricao());
+            ps.setString(2, entidade.getSigla());
             ps.setInt(3, entidade.getId());
             
             ps.executeUpdate();
@@ -89,7 +89,7 @@ public class CargoDAO extends DAO<Cargo> {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "DELETE FROM pdv.cargo WHERE id_cargo = ?";
+            String SQL = "DELETE FROM pdv.unidade_medida WHERE id_unidade_medida = ?";
             PreparedStatement ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, id);
@@ -103,14 +103,14 @@ public class CargoDAO extends DAO<Cargo> {
     }
     
     @Override
-    protected List<Cargo> consultar() throws PDVException {
+    protected List<UnidadeMedida> consultar() throws PDVException {
         try {
-            List<Cargo> cargos = new ArrayList<Cargo>();
+            List<UnidadeMedida> unidade_medidas = new ArrayList<UnidadeMedida>();
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "SELECT id_cargo, nome, perfil FROM pdv.cargo LIMIT 20";
+            String SQL = "SELECT id_unidade_medida, descricao, sigla FROM pdv.unidade_medida LIMIT 20";
             PreparedStatement ps = conn.prepareStatement(SQL);
             
             ResultSet rs = ps.executeQuery();
@@ -119,30 +119,30 @@ public class CargoDAO extends DAO<Cargo> {
             
             while (rs.next()) {
                 Integer id = rs.getInt(1);
-                String nome = rs.getString(2);
-                String perfil = rs.getString(3);
+                String descricao = rs.getString(2);
+                String sigla = rs.getString(3);
                 
-                cargos.add(new Cargo(id, nome, perfil));
+                unidade_medidas.add(new UnidadeMedida(id, descricao, sigla));
             }
             
-            return cargos;
+            return unidade_medidas;
         } catch (Exception e){
             throw new PDVException(e);
         }
     }
     
-    protected List<Cargo> consultarPor(String nome, String perfil) throws PDVException {
+    protected List<UnidadeMedida> consultarPor(String descricao, String sigla) throws PDVException {
         try {
-            List<Cargo> cargos = new ArrayList<Cargo>();
+            List<UnidadeMedida> unidade_medidas = new ArrayList<UnidadeMedida>();
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "SELECT id_cargo, nome, perfil FROM pdv.cargo WHERE nome ILIKE ? AND perfil ILIKE ? LIMIT 20";
+            String SQL = "SELECT id_unidade_medida, descricao, sigla FROM pdv.unidade_medida WHERE descricao ILIKE ? AND sigla ILIKE ? LIMIT 20";
             PreparedStatement ps = conn.prepareStatement(SQL);
             
-            ps.setString(1, "%"+ nome +"%");
-            ps.setString(2, "%"+ perfil +"%");
+            ps.setString(1, "%"+ descricao +"%");
+            ps.setString(2, "%"+ sigla +"%");
             
             ResultSet rs = ps.executeQuery();
             
@@ -150,27 +150,27 @@ public class CargoDAO extends DAO<Cargo> {
             
             while (rs.next()) {
                 Integer _id = rs.getInt(1);
-                String _nome = rs.getString(2);
-                String _perfil = rs.getString(3);
+                String _descricao = rs.getString(2);
+                String _sigla = rs.getString(3);
                 
-                cargos.add(new Cargo(_id, _nome, _perfil));
+                unidade_medidas.add(new UnidadeMedida(_id, _descricao, _sigla));
             }
             
-            return cargos;
+            return unidade_medidas;
         } catch (Exception e){
             throw new PDVException(e);
         }
     }
     
     @Override
-    protected List<Cargo> consultar(int maxResult) throws PDVException {
+    protected List<UnidadeMedida> consultar(int maxResult) throws PDVException {
         try {
-            List<Cargo> cargos = new ArrayList<Cargo>();
+            List<UnidadeMedida> unidade_medidas = new ArrayList<UnidadeMedida>();
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "SELECT id_cargo, nome, perfil FROM pdv.cargo LIMIT ?";
+            String SQL = "SELECT id_unidade_medida, descricao, sigla FROM pdv.unidade_medida LIMIT ?";
             PreparedStatement ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, maxResult);
@@ -181,26 +181,26 @@ public class CargoDAO extends DAO<Cargo> {
             
             while (rs.next()) {
                 Integer id = rs.getInt(1);
-                String nome = rs.getString(2);
-                String perfil = rs.getString(3);
+                String descricao = rs.getString(2);
+                String sigla = rs.getString(3);
                 
-                cargos.add(new Cargo(id, nome, perfil));
+                unidade_medidas.add(new UnidadeMedida(id, descricao, sigla));
             }
             
-            return cargos;
+            return unidade_medidas;
         } catch (Exception e){
             throw new PDVException(e);
         }
     }
     
     @Override
-    protected Cargo consultarPor(int id) throws PDVException {
+    protected UnidadeMedida consultarPor(int id) throws PDVException {
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "SELECT id_cargo, nome, perfil FROM pdv.cargo WHERE id_cargo = ?";
+            String SQL = "SELECT id_unidade_medida, descricao, sigla FROM pdv.unidade_medida WHERE id_unidade_medida = ?";
             PreparedStatement ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, id);
@@ -209,16 +209,16 @@ public class CargoDAO extends DAO<Cargo> {
             
             LogUtil.logSQL(ps);
             
-            Cargo cargo = null;
+            UnidadeMedida unidade_medida = null;
             if (rs.next()) {
-                Integer idCargo = rs.getInt(1);
-                String nome = rs.getString(2);
-                String perfil = rs.getString(3);
+                Integer idUnidadeMedida = rs.getInt(1);
+                String descricao = rs.getString(2);
+                String sigla = rs.getString(3);
                 
-                cargo = new Cargo(idCargo, nome, perfil);
+                unidade_medida = new UnidadeMedida(idUnidadeMedida, descricao, sigla);
             }
             
-            return cargo;
+            return unidade_medida;
         } catch (Exception e){
             throw new PDVException(e);
         }

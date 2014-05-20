@@ -1,6 +1,6 @@
-package br.com.devschool.cargo.servico;
+package br.com.devschool.unidade_medida.servico;
 
-import br.com.devschool.entidade.Cargo;
+import br.com.devschool.entidade.UnidadeMedida;
 import br.com.devschool.util.PDVException;
 import br.com.devschool.util.infra_estrutura.ConnectionFactory;
 import br.com.devschool.util.template.Servico;
@@ -10,35 +10,35 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CargoServico extends Servico<Cargo> {
+public class UnidadeMedidaServico extends Servico<UnidadeMedida> {
     
     private Connection conn;
-    private CargoDAO dao;
+    private UnidadeMedidaDAO dao;
 
-    public CargoServico() throws PDVException {
+    public UnidadeMedidaServico() throws PDVException {
         try {
             conn = ConnectionFactory.getConnection();
             conn.setAutoCommit(Boolean.FALSE);
-            dao = new CargoDAO(conn);
+            dao = new UnidadeMedidaDAO(conn);
         } catch (Exception e) {
             throw new PDVException(e);
         }
     }
     
-    public CargoServico(Connection conn) throws PDVException {
+    public UnidadeMedidaServico(Connection conn) throws PDVException {
         try {
             if (conn == null || conn.isClosed()) {
                 this.conn = ConnectionFactory.getConnection();
             }
             this.conn = conn;
-            dao = new CargoDAO(this.conn);
+            dao = new UnidadeMedidaDAO(this.conn);
         } catch (Exception e) {
             throw new PDVException(e);
         }
     }
     
     @Override
-    public Cargo salvar(Cargo entidade) throws PDVException {
+    public UnidadeMedida salvar(UnidadeMedida entidade) throws PDVException {
         if (entidade == null) {
             throw new IllegalArgumentException("Não é possível salvar os registros, pois nenhum dado foi informado!");
         } else if (!entidade.isTransient()) {
@@ -47,6 +47,12 @@ public class CargoServico extends Servico<Cargo> {
         
         try {
             iniciarTransacao();
+            
+            if (entidade.getSigla().length() > 3) {
+                entidade.setSigla(entidade.getSigla().substring(0, 3));
+            }
+            entidade.setSigla(entidade.getSigla().toUpperCase());
+            
             entidade = dao.salvar(entidade);
             commit();
             
@@ -58,7 +64,7 @@ public class CargoServico extends Servico<Cargo> {
     }
     
     @Override
-    public Cargo salvar(Cargo entidade, Connection conn) throws PDVException {
+    public UnidadeMedida salvar(UnidadeMedida entidade, Connection conn) throws PDVException {
         if (entidade == null) {
             throw new IllegalArgumentException("Não é possível salvar os registros, pois nenhum dado foi informado!");
         } else if (!entidade.isTransient()) {
@@ -66,7 +72,13 @@ public class CargoServico extends Servico<Cargo> {
         }
         
         try {
-            dao = new CargoDAO(conn);
+            dao = new UnidadeMedidaDAO(conn);
+            
+            if (entidade.getSigla().length() > 3) {
+                entidade.setSigla(entidade.getSigla().substring(0, 3));
+            }
+            entidade.setSigla(entidade.getSigla().toUpperCase());
+            
             return dao.salvar(entidade);
         } catch (Exception e) {
             throw new PDVException(e);
@@ -74,15 +86,21 @@ public class CargoServico extends Servico<Cargo> {
     }
 
     @Override
-    public Cargo atualizar(Cargo entidade) throws PDVException {
+    public UnidadeMedida atualizar(UnidadeMedida entidade) throws PDVException {
         if (entidade == null) {
             throw new IllegalArgumentException("Não é possível salvar os registros, pois nenhum dado foi informado!");
         } else if (entidade.isTransient()) {
-            throw new IllegalArgumentException("Não é possível atualizar os registros, pois nenhum Cargo foi informado!");
+            throw new IllegalArgumentException("Não é possível atualizar os registros, pois nenhum UnidadeMedida foi informado!");
         }
         
         try {
             iniciarTransacao();
+            
+            if (entidade.getSigla().length() > 3) {
+                entidade.setSigla(entidade.getSigla().substring(0, 3));
+            }
+            entidade.setSigla(entidade.getSigla().toUpperCase());
+            
             entidade = dao.atualizar(entidade);
             commit();
             
@@ -94,15 +112,21 @@ public class CargoServico extends Servico<Cargo> {
     }
     
     @Override
-    public Cargo atualizar(Cargo entidade, Connection conn) throws PDVException {
+    public UnidadeMedida atualizar(UnidadeMedida entidade, Connection conn) throws PDVException {
         if (entidade == null) {
             throw new IllegalArgumentException("Não é possível salvar os registros, pois nenhum dado foi informado!");
         } else if (entidade.isTransient()) {
-            throw new IllegalArgumentException("Não é possível atualizar os registros, pois nenhum Cargo foi informado!");
+            throw new IllegalArgumentException("Não é possível atualizar os registros, pois nenhum UnidadeMedida foi informado!");
         }
         
         try {
-            dao = new CargoDAO(conn);
+            dao = new UnidadeMedidaDAO(conn);
+            
+            if (entidade.getSigla().length() > 3) {
+                entidade.setSigla(entidade.getSigla().substring(0, 3));
+            }
+            entidade.setSigla(entidade.getSigla().toUpperCase());
+            
             return dao.atualizar(entidade);
         } catch (Exception e) {
             throw new PDVException(e);
@@ -110,18 +134,18 @@ public class CargoServico extends Servico<Cargo> {
     }
 
     @Override
-    public void excluir(Cargo entidade) throws PDVException {
+    public void excluir(UnidadeMedida entidade) throws PDVException {
         if (entidade == null || entidade.isTransient()) {
-            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum Cargo foi informado!");
+            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum UnidadeMedida foi informado!");
         }
         
         excluir(entidade.getId());
     }
     
     @Override
-    public void excluir(Cargo entidade, Connection conn) throws PDVException {
+    public void excluir(UnidadeMedida entidade, Connection conn) throws PDVException {
         if (entidade == null || entidade.isTransient()) {
-            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum Cargo foi informado!");
+            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum UnidadeMedida foi informado!");
         }
         
         excluir(entidade.getId(), conn);
@@ -130,7 +154,7 @@ public class CargoServico extends Servico<Cargo> {
     @Override
     public void excluir(Integer id) throws PDVException {
         if (id == null || id == 0) {
-            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum Cargo foi informado!");
+            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum UnidadeMedida foi informado!");
         }
         
         try {
@@ -146,23 +170,23 @@ public class CargoServico extends Servico<Cargo> {
     @Override
     public void excluir(Integer id, Connection conn) throws PDVException {
         if (id == null || id == 0) {
-            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum Cargo foi informado!");
+            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum UnidadeMedida foi informado!");
         }
         
         try {
-            dao = new CargoDAO(conn);
+            dao = new UnidadeMedidaDAO(conn);
             dao.excluir(id);
         } catch (Exception e) {
             throw new PDVException(e);
         }
     }
     
-    public List<Cargo> consultarPor(String nome, String perfil) throws PDVException {
+    public List<UnidadeMedida> consultarPor(String nome, String perfil) throws PDVException {
         nome = nome == null ? "" : nome;
         perfil = perfil == null ? "" : perfil;
         
         try {
-            dao = new CargoDAO(conn);
+            dao = new UnidadeMedidaDAO(conn);
             return dao.consultarPor(nome, perfil);
         } catch (Exception e) {
             throw new PDVException(e);
@@ -170,9 +194,9 @@ public class CargoServico extends Servico<Cargo> {
     }
 
     @Override
-    public List<Cargo> consultar() throws PDVException {
+    public List<UnidadeMedida> consultar() throws PDVException {
         try {
-            dao = new CargoDAO(conn);
+            dao = new UnidadeMedidaDAO(conn);
             return dao.consultar();
         } catch (Exception e) {
             throw new PDVException(e);
@@ -180,11 +204,11 @@ public class CargoServico extends Servico<Cargo> {
     }
 
     @Override
-    public List<Cargo> consultar(int maxResult) throws PDVException {
+    public List<UnidadeMedida> consultar(int maxResult) throws PDVException {
         maxResult = maxResult < 1 ? 20 : maxResult > 30 ? 30 : maxResult;
         
         try {
-            dao = new CargoDAO(conn);
+            dao = new UnidadeMedidaDAO(conn);
             return dao.consultar(maxResult);
         } catch (Exception e) {
             throw new PDVException(e);
@@ -192,9 +216,9 @@ public class CargoServico extends Servico<Cargo> {
     }
     
     @Override
-    public Cargo consultarPor(int id) throws PDVException {
+    public UnidadeMedida consultarPor(int id) throws PDVException {
         try {
-            dao = new CargoDAO(conn);
+            dao = new UnidadeMedidaDAO(conn);
             return dao.consultarPor(id);
         } catch (Exception e) {
             throw new PDVException(e);
@@ -213,7 +237,7 @@ public class CargoServico extends Servico<Cargo> {
         try {
             conn.rollback();
         } catch (SQLException ex) {
-            Logger.getLogger(CargoServico.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UnidadeMedidaServico.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

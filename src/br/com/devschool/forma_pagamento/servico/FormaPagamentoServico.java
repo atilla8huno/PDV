@@ -1,6 +1,6 @@
-package br.com.devschool.cargo.servico;
+package br.com.devschool.forma_pagamento.servico;
 
-import br.com.devschool.entidade.Cargo;
+import br.com.devschool.entidade.FormaPagamento;
 import br.com.devschool.util.PDVException;
 import br.com.devschool.util.infra_estrutura.ConnectionFactory;
 import br.com.devschool.util.template.Servico;
@@ -10,39 +10,41 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CargoServico extends Servico<Cargo> {
+public class FormaPagamentoServico extends Servico<FormaPagamento> {
     
     private Connection conn;
-    private CargoDAO dao;
+    private FormaPagamentoDAO dao;
 
-    public CargoServico() throws PDVException {
+    public FormaPagamentoServico() throws PDVException {
         try {
             conn = ConnectionFactory.getConnection();
             conn.setAutoCommit(Boolean.FALSE);
-            dao = new CargoDAO(conn);
+            dao = new FormaPagamentoDAO(conn);
         } catch (Exception e) {
             throw new PDVException(e);
         }
     }
     
-    public CargoServico(Connection conn) throws PDVException {
+    public FormaPagamentoServico(Connection conn) throws PDVException {
         try {
             if (conn == null || conn.isClosed()) {
                 this.conn = ConnectionFactory.getConnection();
             }
             this.conn = conn;
-            dao = new CargoDAO(this.conn);
+            dao = new FormaPagamentoDAO(this.conn);
         } catch (Exception e) {
             throw new PDVException(e);
         }
     }
     
     @Override
-    public Cargo salvar(Cargo entidade) throws PDVException {
+    public FormaPagamento salvar(FormaPagamento entidade) throws PDVException {
         if (entidade == null) {
             throw new IllegalArgumentException("Não é possível salvar os registros, pois nenhum dado foi informado!");
         } else if (!entidade.isTransient()) {
             return atualizar(entidade);
+        } else if (entidade.getDescricao() == null || entidade.getDescricao().equals("")) {
+            throw new IllegalArgumentException("É necessário preencher os campos obrigatórios!");
         }
         
         try {
@@ -58,15 +60,18 @@ public class CargoServico extends Servico<Cargo> {
     }
     
     @Override
-    public Cargo salvar(Cargo entidade, Connection conn) throws PDVException {
+    public FormaPagamento salvar(FormaPagamento entidade, Connection conn) throws PDVException {
         if (entidade == null) {
             throw new IllegalArgumentException("Não é possível salvar os registros, pois nenhum dado foi informado!");
         } else if (!entidade.isTransient()) {
             return atualizar(entidade, conn);
+        } else if (entidade.getDescricao() == null || entidade.getDescricao().equals("")) {
+            throw new IllegalArgumentException("É necessário preencher os campos obrigatórios!");
         }
         
         try {
-            dao = new CargoDAO(conn);
+            dao = new FormaPagamentoDAO(conn);
+            
             return dao.salvar(entidade);
         } catch (Exception e) {
             throw new PDVException(e);
@@ -74,11 +79,13 @@ public class CargoServico extends Servico<Cargo> {
     }
 
     @Override
-    public Cargo atualizar(Cargo entidade) throws PDVException {
+    public FormaPagamento atualizar(FormaPagamento entidade) throws PDVException {
         if (entidade == null) {
             throw new IllegalArgumentException("Não é possível salvar os registros, pois nenhum dado foi informado!");
         } else if (entidade.isTransient()) {
-            throw new IllegalArgumentException("Não é possível atualizar os registros, pois nenhum Cargo foi informado!");
+            throw new IllegalArgumentException("Não é possível atualizar os registros, pois nenhum FormaPagamento foi informado!");
+        } else if (entidade.getDescricao() == null || entidade.getDescricao().equals("")) {
+            throw new IllegalArgumentException("É necessário preencher os campos obrigatórios!");
         }
         
         try {
@@ -94,15 +101,18 @@ public class CargoServico extends Servico<Cargo> {
     }
     
     @Override
-    public Cargo atualizar(Cargo entidade, Connection conn) throws PDVException {
+    public FormaPagamento atualizar(FormaPagamento entidade, Connection conn) throws PDVException {
         if (entidade == null) {
             throw new IllegalArgumentException("Não é possível salvar os registros, pois nenhum dado foi informado!");
         } else if (entidade.isTransient()) {
-            throw new IllegalArgumentException("Não é possível atualizar os registros, pois nenhum Cargo foi informado!");
+            throw new IllegalArgumentException("Não é possível atualizar os registros, pois nenhum FormaPagamento foi informado!");
+        } else if (entidade.getDescricao() == null || entidade.getDescricao().equals("")) {
+            throw new IllegalArgumentException("É necessário preencher os campos obrigatórios!");
         }
         
         try {
-            dao = new CargoDAO(conn);
+            dao = new FormaPagamentoDAO(conn);
+            
             return dao.atualizar(entidade);
         } catch (Exception e) {
             throw new PDVException(e);
@@ -110,18 +120,18 @@ public class CargoServico extends Servico<Cargo> {
     }
 
     @Override
-    public void excluir(Cargo entidade) throws PDVException {
+    public void excluir(FormaPagamento entidade) throws PDVException {
         if (entidade == null || entidade.isTransient()) {
-            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum Cargo foi informado!");
+            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum FormaPagamento foi informado!");
         }
         
         excluir(entidade.getId());
     }
     
     @Override
-    public void excluir(Cargo entidade, Connection conn) throws PDVException {
+    public void excluir(FormaPagamento entidade, Connection conn) throws PDVException {
         if (entidade == null || entidade.isTransient()) {
-            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum Cargo foi informado!");
+            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum FormaPagamento foi informado!");
         }
         
         excluir(entidade.getId(), conn);
@@ -130,7 +140,7 @@ public class CargoServico extends Servico<Cargo> {
     @Override
     public void excluir(Integer id) throws PDVException {
         if (id == null || id == 0) {
-            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum Cargo foi informado!");
+            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum FormaPagamento foi informado!");
         }
         
         try {
@@ -146,33 +156,32 @@ public class CargoServico extends Servico<Cargo> {
     @Override
     public void excluir(Integer id, Connection conn) throws PDVException {
         if (id == null || id == 0) {
-            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum Cargo foi informado!");
+            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum FormaPagamento foi informado!");
         }
         
         try {
-            dao = new CargoDAO(conn);
+            dao = new FormaPagamentoDAO(conn);
             dao.excluir(id);
         } catch (Exception e) {
             throw new PDVException(e);
         }
     }
     
-    public List<Cargo> consultarPor(String nome, String perfil) throws PDVException {
-        nome = nome == null ? "" : nome;
-        perfil = perfil == null ? "" : perfil;
+    public List<FormaPagamento> consultarPor(String descricao) throws PDVException {
+        descricao = descricao == null ? "" : descricao;
         
         try {
-            dao = new CargoDAO(conn);
-            return dao.consultarPor(nome, perfil);
+            dao = new FormaPagamentoDAO(conn);
+            return dao.consultarPor(descricao);
         } catch (Exception e) {
             throw new PDVException(e);
         }
     }
 
     @Override
-    public List<Cargo> consultar() throws PDVException {
+    public List<FormaPagamento> consultar() throws PDVException {
         try {
-            dao = new CargoDAO(conn);
+            dao = new FormaPagamentoDAO(conn);
             return dao.consultar();
         } catch (Exception e) {
             throw new PDVException(e);
@@ -180,11 +189,11 @@ public class CargoServico extends Servico<Cargo> {
     }
 
     @Override
-    public List<Cargo> consultar(int maxResult) throws PDVException {
+    public List<FormaPagamento> consultar(int maxResult) throws PDVException {
         maxResult = maxResult < 1 ? 20 : maxResult > 30 ? 30 : maxResult;
         
         try {
-            dao = new CargoDAO(conn);
+            dao = new FormaPagamentoDAO(conn);
             return dao.consultar(maxResult);
         } catch (Exception e) {
             throw new PDVException(e);
@@ -192,9 +201,9 @@ public class CargoServico extends Servico<Cargo> {
     }
     
     @Override
-    public Cargo consultarPor(int id) throws PDVException {
+    public FormaPagamento consultarPor(int id) throws PDVException {
         try {
-            dao = new CargoDAO(conn);
+            dao = new FormaPagamentoDAO(conn);
             return dao.consultarPor(id);
         } catch (Exception e) {
             throw new PDVException(e);
@@ -213,7 +222,7 @@ public class CargoServico extends Servico<Cargo> {
         try {
             conn.rollback();
         } catch (SQLException ex) {
-            Logger.getLogger(CargoServico.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormaPagamentoServico.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

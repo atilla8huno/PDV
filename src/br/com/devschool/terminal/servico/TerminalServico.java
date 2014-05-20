@@ -157,13 +157,13 @@ public class TerminalServico extends Servico<Terminal> {
         }
     }
     
-    public List<Terminal> listarPorNumeroStatus(Integer numero, Boolean status) throws PDVException {
+    public List<Terminal> consultarPor(Integer numero, Boolean status) throws PDVException {
         numero = numero == null ? 0 : numero;
         status = status == null ? Boolean.TRUE : status;
         
         try {
             dao = new TerminalDAO(conn);
-            return dao.consultarPorNumeroStatus(numero, status);
+            return dao.consultarPor(numero, status);
         } catch (Exception e) {
             throw new PDVException(e);
         }
@@ -192,10 +192,10 @@ public class TerminalServico extends Servico<Terminal> {
     }
     
     @Override
-    public Terminal consultarPorId(int id) throws PDVException {
+    public Terminal consultarPor(int id) throws PDVException {
         try {
             dao = new TerminalDAO(conn);
-            return dao.consultarPorId(id);
+            return dao.consultarPor(id);
         } catch (Exception e) {
             throw new PDVException(e);
         }

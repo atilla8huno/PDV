@@ -22,8 +22,6 @@ public class MensagemUtil {
     
     /**
      * Exibe a mensagem de inclusão com sucesso.
-     * 
-     * @param msg 
      */
     public static void addMensagemSalvoSucesso() {
         addMensagemInfo("Registro salvo com sucesso!");
@@ -31,8 +29,6 @@ public class MensagemUtil {
     
     /**
      * Exibe a mensagem de inclusão com sucesso.
-     * 
-     * @param msg 
      */
     public static void addMensagemExcluidoSucesso() {
         addMensagemInfo("Registro excluído com sucesso!");
