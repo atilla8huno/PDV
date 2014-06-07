@@ -22,6 +22,7 @@ public class Produto extends Entidade {
     }
 
     public Produto() {
+        status = Boolean.TRUE;
     }
 
     @Override
