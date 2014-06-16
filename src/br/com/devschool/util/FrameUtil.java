@@ -1,5 +1,6 @@
 package br.com.devschool.util;
 
+import br.com.devschool.entidade.Funcionario;
 import java.awt.Component;
 import java.awt.Container;
 import javax.swing.JCheckBox;
@@ -10,6 +11,8 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 public class FrameUtil {
+    
+    public static Funcionario funcionarioLogado = new Funcionario();
     
     public static Border BORDA_VERMELHA = javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 51, 51));
     public static Border BORDA_PADRAO   = javax.swing.BorderFactory.createLineBorder(new java.awt.Color(175, 175, 175));

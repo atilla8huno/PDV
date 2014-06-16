@@ -3,8 +3,6 @@ package br.com.devschool.funcionario.servico;
 import br.com.devschool.cargo.servico.CargoServico;
 import br.com.devschool.entidade.Cargo;
 import br.com.devschool.entidade.Funcionario;
-import br.com.devschool.entidade.UnidadeMedida;
-import br.com.devschool.unidade_medida.servico.UnidadeMedidaServico;
 import br.com.devschool.util.LogUtil;
 import br.com.devschool.util.PDVException;
 import br.com.devschool.util.infra_estrutura.ConnectionFactory;
@@ -51,7 +49,7 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             
             ps.setInt(1, entidade.getId());
             ps.setString(2, entidade.getNome());
-            ps.setDate(3, new Date(entidade.getDataAdmissao().getTime()));
+            ps.setDate(3, new java.sql.Date(entidade.getDataAdmissao().getTime()));
             ps.setBoolean(4, entidade.isStatus());
             ps.setString(5, entidade.getCpf());
             ps.setString(6, entidade.getSenha());
@@ -252,6 +250,40 @@ public class FuncionarioDAO extends DAO<Funcionario> {
                 Cargo cargo = new CargoServico().consultarPor(rs.getInt(6));
                 
                 funcionario = new Funcionario(id, nome, dataAdmissao, status, cpf, senha, cargo);
+            }
+            
+            return funcionario;
+        } catch (Exception e){
+            throw new PDVException(e);
+        }
+    }
+    
+    protected Funcionario consultarPor(String cpf, String senha) throws PDVException {
+        try {
+            if (conn == null || conn.isClosed()) {
+                conn = ConnectionFactory.getConnection();
+            }
+            String SQL = "SELECT id_funcionario, nome, data_admissao, status, cpf, senha, id_cargo "
+                    + "FROM pdv.funcionario WHERE cpf = ? AND senha = ?";
+            PreparedStatement ps = conn.prepareStatement(SQL);
+            
+            ps.setString(1, cpf);
+            ps.setString(2, senha);
+            
+            ResultSet rs = ps.executeQuery();
+            LogUtil.logSQL(ps);
+            
+            Funcionario funcionario = null;
+            if (rs.next()) {
+                Integer id = rs.getInt(1);
+                String nome = rs.getString(2);
+                java.util.Date dataAdmissao = rs.getDate(3);
+                boolean status = rs.getBoolean(4);
+                String _cpf = rs.getString(5);
+                String _senha = rs.getString(6);
+                Cargo cargo = new CargoServico().consultarPor(rs.getInt(7));
+                
+                funcionario = new Funcionario(id, nome, dataAdmissao, status, _cpf, _senha, cargo);
             }
             
             return funcionario;

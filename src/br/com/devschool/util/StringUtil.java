@@ -36,11 +36,9 @@ public class StringUtil {
      */
     public static String criptografar(String senha) {
         String sen = "";
-        MessageDigest md = null;
         try {
-            md = MessageDigest.getInstance("MD5");
-            BigInteger hash;
-            hash = new BigInteger(1, md.digest(senha.getBytes("UTF-8")));
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            BigInteger hash = new BigInteger(1, md.digest(senha.getBytes("UTF-8")));
             sen = hash.toString(16);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
