@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -48,24 +50,27 @@ public class ConnectionFactory {
         return ps;
     }
     
-    public static void getCloseConnection(Connection conn,
-            Statement stmt, ResultSet rs) throws Exception {
+    public static void getCloseConnection(Connection conn, Statement stmt, ResultSet rs) {
         getClose(conn, stmt, rs);
     }
+    
+    public static void getCloseConnection(Statement stmt, ResultSet rs) {
+        getClose(null, stmt, rs);
+    }
 
-    public static void getCloseConnection(Connection conn, Statement stmt)
-            throws Exception {
+    public static void getCloseConnection(Connection conn, Statement stmt) {
         getClose(conn, stmt, null);
     }
 
-    public static void getCloseConnection(Connection conn)
-            throws Exception {
+    public static void getCloseConnection(Connection conn) {
         getClose(conn, null, null);
     }
+    
+    public static void getCloseConnection(Statement stmt) {
+        getClose(null, stmt, null);
+    }
 
-    private static void getClose(Connection conn,
-            Statement stmt, ResultSet rs)
-            throws Exception {
+    private static void getClose(Connection conn, Statement stmt, ResultSet rs) {
         try {
             if (rs != null) {
                 rs.close();
@@ -77,7 +82,7 @@ public class ConnectionFactory {
                 conn.close();
             }
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            Logger.getLogger(ConnectionFactory.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 }

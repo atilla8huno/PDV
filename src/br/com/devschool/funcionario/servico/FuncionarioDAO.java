@@ -31,14 +31,16 @@ public class FuncionarioDAO extends DAO<Funcionario> {
 
     @Override
     protected Funcionario salvar(Funcionario entidade) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQLNextal = "SELECT NEXTVAL('pdv.funcionario_id_funcionario_seq')";
-            PreparedStatement ps = conn.prepareStatement(SQLNextal);
-            ResultSet rs = ps.executeQuery();
+            ps = conn.prepareStatement(SQLNextal);
+            rs = ps.executeQuery();
             
             if (rs.next()) {
                 entidade.setId(rs.getInt(1));
@@ -61,18 +63,21 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             return entidade;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 
     @Override
     protected Funcionario atualizar(Funcionario entidade) throws PDVException {
+        PreparedStatement ps = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "UPDATE pdv.funcionario SET nome=?, data_admissao=?, status=?, cpf=?, senha=?, id_cargo=? WHERE id_funcionario=?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setString(1, entidade.getNome());
             ps.setDate(2, new Date(entidade.getDataAdmissao().getTime()));
@@ -88,18 +93,21 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             return entidade;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps);
         }
     }
 
     @Override
     protected void excluir(Integer id) throws PDVException {
+        PreparedStatement ps = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "UPDATE pdv.funcionario SET status=? WHERE id_funcionario=?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setBoolean(1, Boolean.FALSE);
             ps.setInt(2, id);
@@ -108,11 +116,15 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             LogUtil.logSQL(ps);
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps);
         }
     }
     
     @Override
     protected List<Funcionario> consultar() throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<Funcionario> funcionarios = new ArrayList<Funcionario>();
             if (conn == null || conn.isClosed()) {
@@ -120,11 +132,11 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             }
             
             String SQL = "SELECT id_funcionario, nome, data_admissao, status, cpf, senha, id_cargo FROM pdv.funcionario WHERE status=? LIMIT 20";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setBoolean(1, Boolean.TRUE);
             
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -142,10 +154,14 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             return funcionarios;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     protected List<Funcionario> consultarPor(String nome, Cargo cargo) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<Funcionario> funcionarios = new ArrayList<Funcionario>();
             if (conn == null || conn.isClosed()) {
@@ -159,7 +175,7 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             }
             SQL += "LIMIT 20";
             
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setBoolean(1, Boolean.TRUE);
             ps.setString(2, "%"+ nome +"%");
@@ -167,7 +183,7 @@ public class FuncionarioDAO extends DAO<Funcionario> {
                 ps.setInt(3, cargo.getId());
             }
             
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -185,11 +201,15 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             return funcionarios;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     @Override
     protected List<Funcionario> consultar(int maxResult) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<Funcionario> funcionarios = new ArrayList<Funcionario>();
             if (conn == null || conn.isClosed()) {
@@ -197,12 +217,12 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             }
             
             String SQL = "SELECT id_funcionario, nome, data_admissao, status, cpf, senha, id_cargo FROM pdv.funcionario WHERE status = ? LIMIT ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setBoolean(1, Boolean.TRUE);
             ps.setInt(2, maxResult);
             
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -220,22 +240,26 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             return funcionarios;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     @Override
     protected Funcionario consultarPor(int id) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "SELECT nome, data_admissao, status, cpf, senha, id_cargo FROM pdv.funcionario WHERE id_funcionario = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, id);
             
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             Funcionario funcionario = null;
@@ -253,22 +277,26 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             return funcionario;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     protected Funcionario consultarPor(String cpf, String senha) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             String SQL = "SELECT id_funcionario, nome, data_admissao, status, cpf, senha, id_cargo "
                     + "FROM pdv.funcionario WHERE cpf = ? AND senha = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setString(1, cpf);
             ps.setString(2, senha);
             
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             Funcionario funcionario = null;
@@ -292,6 +320,8 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             return funcionario;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 }

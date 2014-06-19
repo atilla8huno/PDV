@@ -28,14 +28,16 @@ public class FormaPagamentoDAO extends DAO<FormaPagamento> {
 
     @Override
     protected FormaPagamento salvar(FormaPagamento entidade) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQLNextal = "SELECT NEXTVAL('pdv.forma_pagamento_id_forma_pagamento_seq')";
-            PreparedStatement ps = conn.prepareStatement(SQLNextal);
-            ResultSet rs = ps.executeQuery();
+            ps = conn.prepareStatement(SQLNextal);
+            rs = ps.executeQuery();
             
             if (rs.next()) {
                 entidade.setId(rs.getInt(1));
@@ -48,60 +50,67 @@ public class FormaPagamentoDAO extends DAO<FormaPagamento> {
             ps.setString(2, entidade.getDescricao());
             
             ps.executeUpdate();
-            
             LogUtil.logSQL(ps);
             
             return entidade;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 
     @Override
     protected FormaPagamento atualizar(FormaPagamento entidade) throws PDVException {
+        PreparedStatement ps = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "UPDATE pdv.forma_pagamento SET descricao = ? WHERE id_forma_pagamento = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setString(1, entidade.getDescricao());
             ps.setInt(2, entidade.getId());
             
             ps.executeUpdate();
-            
             LogUtil.logSQL(ps);
             
             return entidade;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps);
         }
     }
 
     @Override
     protected void excluir(Integer id) throws PDVException {
+        PreparedStatement ps = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "DELETE FROM pdv.forma_pagamento WHERE id_forma_pagamento = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, id);
-            
             ps.executeUpdate();
             
             LogUtil.logSQL(ps);
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps);
         }
     }
     
     @Override
     protected List<FormaPagamento> consultar() throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<FormaPagamento> forma_pagamentos = new ArrayList<FormaPagamento>();
             if (conn == null || conn.isClosed()) {
@@ -109,10 +118,9 @@ public class FormaPagamentoDAO extends DAO<FormaPagamento> {
             }
             
             String SQL = "SELECT id_forma_pagamento, descricao FROM pdv.forma_pagamento LIMIT 20";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
-            ResultSet rs = ps.executeQuery();
-            
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -126,10 +134,14 @@ public class FormaPagamentoDAO extends DAO<FormaPagamento> {
             return forma_pagamentos;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     protected List<FormaPagamento> consultarPor(String descricao) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<FormaPagamento> forma_pagamentos = new ArrayList<FormaPagamento>();
             if (conn == null || conn.isClosed()) {
@@ -137,12 +149,11 @@ public class FormaPagamentoDAO extends DAO<FormaPagamento> {
             }
             
             String SQL = "SELECT id_forma_pagamento, descricao FROM pdv.forma_pagamento WHERE descricao ILIKE ? LIMIT 20";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setString(1, "%"+ descricao +"%");
             
-            ResultSet rs = ps.executeQuery();
-            
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -155,11 +166,15 @@ public class FormaPagamentoDAO extends DAO<FormaPagamento> {
             return forma_pagamentos;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     @Override
     protected List<FormaPagamento> consultar(int maxResult) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<FormaPagamento> forma_pagamentos = new ArrayList<FormaPagamento>();
             if (conn == null || conn.isClosed()) {
@@ -167,12 +182,11 @@ public class FormaPagamentoDAO extends DAO<FormaPagamento> {
             }
             
             String SQL = "SELECT id_forma_pagamento, descricao FROM pdv.forma_pagamento LIMIT ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, maxResult);
             
-            ResultSet rs = ps.executeQuery();
-            
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -185,23 +199,26 @@ public class FormaPagamentoDAO extends DAO<FormaPagamento> {
             return forma_pagamentos;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     @Override
     protected FormaPagamento consultarPor(int id) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "SELECT id_forma_pagamento, descricao FROM pdv.forma_pagamento WHERE id_forma_pagamento = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, id);
             
-            ResultSet rs = ps.executeQuery();
-            
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             FormaPagamento forma_pagamento = null;
@@ -215,6 +232,8 @@ public class FormaPagamentoDAO extends DAO<FormaPagamento> {
             return forma_pagamento;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 }

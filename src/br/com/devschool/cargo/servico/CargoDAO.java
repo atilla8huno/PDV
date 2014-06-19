@@ -28,14 +28,16 @@ public class CargoDAO extends DAO<Cargo> {
 
     @Override
     protected Cargo salvar(Cargo entidade) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQLNextal = "SELECT NEXTVAL('pdv.cargo_id_cargo_seq')";
-            PreparedStatement ps = conn.prepareStatement(SQLNextal);
-            ResultSet rs = ps.executeQuery();
+            ps = conn.prepareStatement(SQLNextal);
+            rs = ps.executeQuery();
             
             if (rs.next()) {
                 entidade.setId(rs.getInt(1));
@@ -49,61 +51,68 @@ public class CargoDAO extends DAO<Cargo> {
             ps.setString(3, entidade.getPerfil());
             
             ps.executeUpdate();
-            
             LogUtil.logSQL(ps);
             
             return entidade;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 
     @Override
     protected Cargo atualizar(Cargo entidade) throws PDVException {
+        PreparedStatement ps = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "UPDATE pdv.cargo SET nome = ?, perfil = ? WHERE id_cargo = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setString(1, entidade.getNome());
             ps.setString(2, entidade.getPerfil());
             ps.setInt(3, entidade.getId());
             
             ps.executeUpdate();
-            
             LogUtil.logSQL(ps);
             
             return entidade;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps);
         }
     }
 
     @Override
     protected void excluir(Integer id) throws PDVException {
+        PreparedStatement ps = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "DELETE FROM pdv.cargo WHERE id_cargo = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, id);
-            
             ps.executeUpdate();
             
             LogUtil.logSQL(ps);
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps);
         }
     }
     
     @Override
     protected List<Cargo> consultar() throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<Cargo> cargos = new ArrayList<Cargo>();
             if (conn == null || conn.isClosed()) {
@@ -111,10 +120,9 @@ public class CargoDAO extends DAO<Cargo> {
             }
             
             String SQL = "SELECT id_cargo, nome, perfil FROM pdv.cargo LIMIT 20";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
-            ResultSet rs = ps.executeQuery();
-            
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -128,10 +136,14 @@ public class CargoDAO extends DAO<Cargo> {
             return cargos;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     protected List<Cargo> consultarPor(String nome, String perfil) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<Cargo> cargos = new ArrayList<Cargo>();
             if (conn == null || conn.isClosed()) {
@@ -139,13 +151,12 @@ public class CargoDAO extends DAO<Cargo> {
             }
             
             String SQL = "SELECT id_cargo, nome, perfil FROM pdv.cargo WHERE nome ILIKE ? AND perfil ILIKE ? LIMIT 20";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setString(1, "%"+ nome +"%");
             ps.setString(2, "%"+ perfil +"%");
             
-            ResultSet rs = ps.executeQuery();
-            
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -159,11 +170,15 @@ public class CargoDAO extends DAO<Cargo> {
             return cargos;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     @Override
     protected List<Cargo> consultar(int maxResult) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<Cargo> cargos = new ArrayList<Cargo>();
             if (conn == null || conn.isClosed()) {
@@ -171,12 +186,11 @@ public class CargoDAO extends DAO<Cargo> {
             }
             
             String SQL = "SELECT id_cargo, nome, perfil FROM pdv.cargo LIMIT ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, maxResult);
             
-            ResultSet rs = ps.executeQuery();
-            
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -190,23 +204,26 @@ public class CargoDAO extends DAO<Cargo> {
             return cargos;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     @Override
     protected Cargo consultarPor(int id) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "SELECT id_cargo, nome, perfil FROM pdv.cargo WHERE id_cargo = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, id);
             
-            ResultSet rs = ps.executeQuery();
-            
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             Cargo cargo = null;
@@ -221,6 +238,8 @@ public class CargoDAO extends DAO<Cargo> {
             return cargo;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 }

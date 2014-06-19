@@ -28,14 +28,16 @@ public class UnidadeMedidaDAO extends DAO<UnidadeMedida> {
 
     @Override
     protected UnidadeMedida salvar(UnidadeMedida entidade) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQLNextal = "SELECT NEXTVAL('pdv.unidade_medida_id_unidade_medida_seq')";
-            PreparedStatement ps = conn.prepareStatement(SQLNextal);
-            ResultSet rs = ps.executeQuery();
+            ps = conn.prepareStatement(SQLNextal);
+            rs = ps.executeQuery();
             
             if (rs.next()) {
                 entidade.setId(rs.getInt(1));
@@ -49,61 +51,68 @@ public class UnidadeMedidaDAO extends DAO<UnidadeMedida> {
             ps.setString(3, entidade.getSigla());
             
             ps.executeUpdate();
-            
             LogUtil.logSQL(ps);
             
             return entidade;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 
     @Override
     protected UnidadeMedida atualizar(UnidadeMedida entidade) throws PDVException {
+        PreparedStatement ps = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "UPDATE pdv.unidade_medida SET descricao = ?, sigla = ? WHERE id_unidade_medida = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setString(1, entidade.getDescricao());
             ps.setString(2, entidade.getSigla());
             ps.setInt(3, entidade.getId());
             
             ps.executeUpdate();
-            
             LogUtil.logSQL(ps);
             
             return entidade;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps);
         }
     }
 
     @Override
     protected void excluir(Integer id) throws PDVException {
+        PreparedStatement ps = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "DELETE FROM pdv.unidade_medida WHERE id_unidade_medida = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, id);
             
             ps.executeUpdate();
-            
             LogUtil.logSQL(ps);
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps);
         }
     }
     
     @Override
     protected List<UnidadeMedida> consultar() throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<UnidadeMedida> unidade_medidas = new ArrayList<UnidadeMedida>();
             if (conn == null || conn.isClosed()) {
@@ -111,10 +120,9 @@ public class UnidadeMedidaDAO extends DAO<UnidadeMedida> {
             }
             
             String SQL = "SELECT id_unidade_medida, descricao, sigla FROM pdv.unidade_medida LIMIT 20";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
-            ResultSet rs = ps.executeQuery();
-            
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -128,10 +136,14 @@ public class UnidadeMedidaDAO extends DAO<UnidadeMedida> {
             return unidade_medidas;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     protected List<UnidadeMedida> consultarPor(String descricao, String sigla) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<UnidadeMedida> unidade_medidas = new ArrayList<UnidadeMedida>();
             if (conn == null || conn.isClosed()) {
@@ -139,13 +151,12 @@ public class UnidadeMedidaDAO extends DAO<UnidadeMedida> {
             }
             
             String SQL = "SELECT id_unidade_medida, descricao, sigla FROM pdv.unidade_medida WHERE descricao ILIKE ? AND sigla ILIKE ? LIMIT 20";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setString(1, "%"+ descricao +"%");
             ps.setString(2, "%"+ sigla +"%");
             
-            ResultSet rs = ps.executeQuery();
-            
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -159,11 +170,15 @@ public class UnidadeMedidaDAO extends DAO<UnidadeMedida> {
             return unidade_medidas;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     @Override
     protected List<UnidadeMedida> consultar(int maxResult) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<UnidadeMedida> unidade_medidas = new ArrayList<UnidadeMedida>();
             if (conn == null || conn.isClosed()) {
@@ -171,12 +186,11 @@ public class UnidadeMedidaDAO extends DAO<UnidadeMedida> {
             }
             
             String SQL = "SELECT id_unidade_medida, descricao, sigla FROM pdv.unidade_medida LIMIT ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, maxResult);
             
-            ResultSet rs = ps.executeQuery();
-            
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -190,23 +204,26 @@ public class UnidadeMedidaDAO extends DAO<UnidadeMedida> {
             return unidade_medidas;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     @Override
     protected UnidadeMedida consultarPor(int id) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "SELECT id_unidade_medida, descricao, sigla FROM pdv.unidade_medida WHERE id_unidade_medida = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, id);
             
-            ResultSet rs = ps.executeQuery();
-            
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             UnidadeMedida unidade_medida = null;
@@ -221,6 +238,8 @@ public class UnidadeMedidaDAO extends DAO<UnidadeMedida> {
             return unidade_medida;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 }

@@ -30,14 +30,16 @@ public class ProdutoDAO extends DAO<Produto> {
 
     @Override
     protected Produto salvar(Produto entidade) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQLNextal = "SELECT NEXTVAL('pdv.produto_id_produto_seq')";
-            PreparedStatement ps = conn.prepareStatement(SQLNextal);
-            ResultSet rs = ps.executeQuery();
+            ps = conn.prepareStatement(SQLNextal);
+            rs = ps.executeQuery();
             
             if (rs.next()) {
                 entidade.setId(rs.getInt(1));
@@ -54,24 +56,26 @@ public class ProdutoDAO extends DAO<Produto> {
             ps.setInt(6, entidade.getUnidadeMedida().getId());
             
             ps.executeUpdate();
-            
             LogUtil.logSQL(ps);
             
             return entidade;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 
     @Override
     protected Produto atualizar(Produto entidade) throws PDVException {
+        PreparedStatement ps = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "UPDATE pdv.produto SET nome=?, codigo=?, valor=?, status=?, id_unidade_medida=? WHERE id_produto=?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setString(1, entidade.getNome());
             ps.setInt(2, entidade.getCodigo());
@@ -81,24 +85,26 @@ public class ProdutoDAO extends DAO<Produto> {
             ps.setInt(6, entidade.getId());
             
             ps.executeUpdate();
-            
             LogUtil.logSQL(ps);
             
             return entidade;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps);
         }
     }
 
     @Override
     protected void excluir(Integer id) throws PDVException {
+        PreparedStatement ps = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "UPDATE pdv.produto SET status = ? WHERE id_produto = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setBoolean(1, Boolean.FALSE);
             ps.setInt(2, id);
@@ -107,11 +113,15 @@ public class ProdutoDAO extends DAO<Produto> {
             LogUtil.logSQL(ps);
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps);
         }
     }
     
     @Override
     protected List<Produto> consultar() throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<Produto> produtos = new ArrayList<Produto>();
             if (conn == null || conn.isClosed()) {
@@ -119,11 +129,11 @@ public class ProdutoDAO extends DAO<Produto> {
             }
             
             String SQL = "SELECT id_produto, nome, codigo, valor, status, id_unidade_medida FROM pdv.produto WHERE status = ? LIMIT 20";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setBoolean(1, Boolean.TRUE);
             
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -140,10 +150,14 @@ public class ProdutoDAO extends DAO<Produto> {
             return produtos;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     protected List<Produto> consultarPor(String nome, Integer codigo) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<Produto> produtos = new ArrayList<Produto>();
             if (conn == null || conn.isClosed()) {
@@ -156,7 +170,7 @@ public class ProdutoDAO extends DAO<Produto> {
             }
             SQL += "LIMIT 20";
             
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setBoolean(1, Boolean.TRUE);
             ps.setString(2, "%"+ nome +"%");
@@ -164,7 +178,7 @@ public class ProdutoDAO extends DAO<Produto> {
                 ps.setInt(3, codigo);
             }
             
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -181,11 +195,15 @@ public class ProdutoDAO extends DAO<Produto> {
             return produtos;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     @Override
     protected List<Produto> consultar(int maxResult) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<Produto> produtos = new ArrayList<Produto>();
             if (conn == null || conn.isClosed()) {
@@ -193,12 +211,12 @@ public class ProdutoDAO extends DAO<Produto> {
             }
             
             String SQL = "SELECT id_produto, nome, codigo, valor, status, id_unidade_medida FROM pdv.produto WHERE status = ? LIMIT ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setBoolean(1, Boolean.TRUE);
             ps.setInt(2, maxResult);
             
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -215,22 +233,26 @@ public class ProdutoDAO extends DAO<Produto> {
             return produtos;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
     
     @Override
     protected Produto consultarPor(int id) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
             
             String SQL = "SELECT nome, codigo, valor, status, id_unidade_medida FROM pdv.produto WHERE id_produto = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
             
             ps.setInt(1, id);
             
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             Produto produto = null;
@@ -247,6 +269,8 @@ public class ProdutoDAO extends DAO<Produto> {
             return produto;
         } catch (Exception e){
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 }

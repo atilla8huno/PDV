@@ -28,14 +28,16 @@ public class TerminalDAO extends DAO<Terminal> {
 
     @Override
     protected Terminal salvar(Terminal entidade) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
 
             String SQLNextal = "SELECT NEXTVAL('pdv.terminal_id_terminal_seq')";
-            PreparedStatement ps = conn.prepareStatement(SQLNextal);
-            ResultSet rs = ps.executeQuery();
+            ps = conn.prepareStatement(SQLNextal);
+            rs = ps.executeQuery();
 
             if (rs.next()) {
                 entidade.setId(rs.getInt(1));
@@ -49,36 +51,39 @@ public class TerminalDAO extends DAO<Terminal> {
             ps.setBoolean(3, entidade.isStatus());
 
             ps.executeUpdate();
-
             LogUtil.logSQL(ps);
 
             return entidade;
         } catch (Exception e) {
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 
     @Override
     protected Terminal atualizar(Terminal entidade) throws PDVException {
+        PreparedStatement ps = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
 
             String SQL = "UPDATE pdv.terminal SET numero = ?, status = ? WHERE id_terminal = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
 
             ps.setInt(1, entidade.getNumero());
             ps.setBoolean(2, entidade.isStatus());
             ps.setInt(3, entidade.getId());
 
             ps.executeUpdate();
-
             LogUtil.logSQL(ps);
 
             return entidade;
         } catch (Exception e) {
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps);
         }
     }
 
@@ -87,27 +92,31 @@ public class TerminalDAO extends DAO<Terminal> {
      */
     @Override
     protected void excluir(Integer id) throws PDVException {
+        PreparedStatement ps = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
 
             String SQL = "UPDATE pdv.terminal SET status = ? WHERE id_terminal = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
 
             ps.setBoolean(1, Boolean.FALSE);
             ps.setInt(2, id);
 
             ps.executeUpdate();
-
             LogUtil.logSQL(ps);
         } catch (Exception e) {
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps);
         }
     }
 
     @Override
     protected List<Terminal> consultar() throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<Terminal> terminals = new ArrayList<Terminal>();
             if (conn == null || conn.isClosed()) {
@@ -115,12 +124,11 @@ public class TerminalDAO extends DAO<Terminal> {
             }
 
             String SQL = "SELECT id_terminal, numero, status FROM pdv.terminal WHERE status = ? LIMIT 20";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
 
             ps.setBoolean(1, Boolean.TRUE);
             
-            ResultSet rs = ps.executeQuery();
-
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
 
             while (rs.next()) {
@@ -134,10 +142,14 @@ public class TerminalDAO extends DAO<Terminal> {
             return terminals;
         } catch (Exception e) {
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 
     protected List<Terminal> consultarPor(Integer numero, Boolean status) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<Terminal> terminals = new ArrayList<Terminal>();
             if (conn == null || conn.isClosed()) {
@@ -150,15 +162,14 @@ public class TerminalDAO extends DAO<Terminal> {
             }
             SQL = SQL + "LIMIT 20";
 
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
 
             ps.setBoolean(1, status);
             if (numero > 0) {
                 ps.setInt(2, numero);
             }
 
-            ResultSet rs = ps.executeQuery();
-
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
 
             while (rs.next()) {
@@ -172,11 +183,15 @@ public class TerminalDAO extends DAO<Terminal> {
             return terminals;
         } catch (Exception e) {
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 
     @Override
     protected List<Terminal> consultar(int maxResult) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             List<Terminal> terminals = new ArrayList<Terminal>();
             if (conn == null || conn.isClosed()) {
@@ -184,13 +199,12 @@ public class TerminalDAO extends DAO<Terminal> {
             }
 
             String SQL = "SELECT id_terminal, numero, status FROM pdv.terminal WHERE status = ? LIMIT ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
 
             ps.setBoolean(1, Boolean.TRUE);
             ps.setInt(2, maxResult);
 
-            ResultSet rs = ps.executeQuery();
-
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
 
             while (rs.next()) {
@@ -204,23 +218,26 @@ public class TerminalDAO extends DAO<Terminal> {
             return terminals;
         } catch (Exception e) {
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 
     @Override
     protected Terminal consultarPor(int id) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
             if (conn == null || conn.isClosed()) {
                 conn = ConnectionFactory.getConnection();
             }
 
             String SQL = "SELECT id_terminal, numero, status FROM pdv.terminal WHERE id_terminal = ?";
-            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps = conn.prepareStatement(SQL);
 
             ps.setInt(1, id);
 
-            ResultSet rs = ps.executeQuery();
-
+            rs = ps.executeQuery();
             LogUtil.logSQL(ps);
 
             Terminal terminal = null;
@@ -235,6 +252,8 @@ public class TerminalDAO extends DAO<Terminal> {
             return terminal;
         } catch (Exception e) {
             throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
 }
