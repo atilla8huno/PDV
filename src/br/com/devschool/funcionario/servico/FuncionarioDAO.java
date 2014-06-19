@@ -56,7 +56,6 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             ps.setInt(7, entidade.getCargo().getId());
             
             ps.executeUpdate();
-            
             LogUtil.logSQL(ps);
             
             return entidade;
@@ -84,7 +83,6 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             ps.setInt(7, entidade.getId());
             
             ps.executeUpdate();
-            
             LogUtil.logSQL(ps);
             
             return entidade;
@@ -100,13 +98,13 @@ public class FuncionarioDAO extends DAO<Funcionario> {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "DELETE FROM pdv.funcionario WHERE id_funcionario = ?";
+            String SQL = "UPDATE pdv.funcionario SET status=? WHERE id_funcionario=?";
             PreparedStatement ps = conn.prepareStatement(SQL);
             
-            ps.setInt(1, id);
+            ps.setBoolean(1, Boolean.FALSE);
+            ps.setInt(2, id);
             
             ps.executeUpdate();
-            
             LogUtil.logSQL(ps);
         } catch (Exception e){
             throw new PDVException(e);
@@ -121,11 +119,12 @@ public class FuncionarioDAO extends DAO<Funcionario> {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "SELECT id_funcionario, nome, data_admissao, status, cpf, senha, id_cargo FROM pdv.funcionario LIMIT 20";
+            String SQL = "SELECT id_funcionario, nome, data_admissao, status, cpf, senha, id_cargo FROM pdv.funcionario WHERE status=? LIMIT 20";
             PreparedStatement ps = conn.prepareStatement(SQL);
             
-            ResultSet rs = ps.executeQuery();
+            ps.setBoolean(1, Boolean.TRUE);
             
+            ResultSet rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -153,8 +152,8 @@ public class FuncionarioDAO extends DAO<Funcionario> {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "SELECT id_funcionario, nome, data_admissao, status, cpf, senha, id_cargo FROM pdv.funcionario"
-                    + " WHERE nome ILIKE ? ";
+            String SQL = "SELECT id_funcionario, nome, data_admissao, status, cpf, senha, id_cargo "
+                    + " FROM pdv.funcionario WHERE status = ? AND nome ILIKE ? ";
             if (cargo != null && !cargo.isTransient()) {
                 SQL += "AND id_cargo = ? ";
             }
@@ -162,13 +161,13 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             
             PreparedStatement ps = conn.prepareStatement(SQL);
             
-            ps.setString(1, "%"+ nome +"%");
+            ps.setBoolean(1, Boolean.TRUE);
+            ps.setString(2, "%"+ nome +"%");
             if (cargo != null && !cargo.isTransient()) {
-                ps.setInt(2, cargo.getId());
+                ps.setInt(3, cargo.getId());
             }
             
             ResultSet rs = ps.executeQuery();
-            
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -197,13 +196,13 @@ public class FuncionarioDAO extends DAO<Funcionario> {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "SELECT id_funcionario, nome, data_admissao, status, cpf, senha, id_cargo FROM pdv.funcionario LIMIT ?";
+            String SQL = "SELECT id_funcionario, nome, data_admissao, status, cpf, senha, id_cargo FROM pdv.funcionario WHERE status = ? LIMIT ?";
             PreparedStatement ps = conn.prepareStatement(SQL);
             
-            ps.setInt(1, maxResult);
+            ps.setBoolean(1, Boolean.TRUE);
+            ps.setInt(2, maxResult);
             
             ResultSet rs = ps.executeQuery();
-            
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -237,7 +236,6 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             ps.setInt(1, id);
             
             ResultSet rs = ps.executeQuery();
-            
             LogUtil.logSQL(ps);
             
             Funcionario funcionario = null;
@@ -275,10 +273,15 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             
             Funcionario funcionario = null;
             if (rs.next()) {
+                boolean status = rs.getBoolean(4);
+                
+                if (!status) {
+                    throw new PDVException("Funcionário encontra-se inativo!");
+                }
+                
                 Integer id = rs.getInt(1);
                 String nome = rs.getString(2);
                 java.util.Date dataAdmissao = rs.getDate(3);
-                boolean status = rs.getBoolean(4);
                 String _cpf = rs.getString(5);
                 String _senha = rs.getString(6);
                 Cargo cargo = new CargoServico().consultarPor(rs.getInt(7));

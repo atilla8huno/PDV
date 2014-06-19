@@ -25,6 +25,7 @@ public class Funcionario extends Entidade {
     }
 
     public Funcionario() {
+        status = true;
     }
 
     @Override

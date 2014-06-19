@@ -82,6 +82,9 @@ public class TerminalDAO extends DAO<Terminal> {
         }
     }
 
+    /**
+     * Exclusão lógica.
+     */
     @Override
     protected void excluir(Integer id) throws PDVException {
         try {
@@ -89,10 +92,11 @@ public class TerminalDAO extends DAO<Terminal> {
                 conn = ConnectionFactory.getConnection();
             }
 
-            String SQL = "DELETE FROM pdv.terminal WHERE id_terminal = ?";
+            String SQL = "UPDATE pdv.terminal SET status = ? WHERE id_terminal = ?";
             PreparedStatement ps = conn.prepareStatement(SQL);
 
-            ps.setInt(1, id);
+            ps.setBoolean(1, Boolean.FALSE);
+            ps.setInt(2, id);
 
             ps.executeUpdate();
 
@@ -110,9 +114,11 @@ public class TerminalDAO extends DAO<Terminal> {
                 conn = ConnectionFactory.getConnection();
             }
 
-            String SQL = "SELECT id_terminal, numero, status FROM pdv.terminal LIMIT 20";
+            String SQL = "SELECT id_terminal, numero, status FROM pdv.terminal WHERE status = ? LIMIT 20";
             PreparedStatement ps = conn.prepareStatement(SQL);
 
+            ps.setBoolean(1, Boolean.TRUE);
+            
             ResultSet rs = ps.executeQuery();
 
             LogUtil.logSQL(ps);
@@ -177,10 +183,11 @@ public class TerminalDAO extends DAO<Terminal> {
                 conn = ConnectionFactory.getConnection();
             }
 
-            String SQL = "SELECT id_terminal, numero, status FROM pdv.terminal LIMIT ?";
+            String SQL = "SELECT id_terminal, numero, status FROM pdv.terminal WHERE status = ? LIMIT ?";
             PreparedStatement ps = conn.prepareStatement(SQL);
 
-            ps.setInt(1, maxResult);
+            ps.setBoolean(1, Boolean.TRUE);
+            ps.setInt(2, maxResult);
 
             ResultSet rs = ps.executeQuery();
 

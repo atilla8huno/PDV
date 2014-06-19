@@ -97,13 +97,13 @@ public class ProdutoDAO extends DAO<Produto> {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "DELETE FROM pdv.produto WHERE id_produto = ?";
+            String SQL = "UPDATE pdv.produto SET status = ? WHERE id_produto = ?";
             PreparedStatement ps = conn.prepareStatement(SQL);
             
-            ps.setInt(1, id);
+            ps.setBoolean(1, Boolean.FALSE);
+            ps.setInt(2, id);
             
             ps.executeUpdate();
-            
             LogUtil.logSQL(ps);
         } catch (Exception e){
             throw new PDVException(e);
@@ -118,11 +118,12 @@ public class ProdutoDAO extends DAO<Produto> {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "SELECT id_produto, nome, codigo, valor, status, id_unidade_medida FROM pdv.produto LIMIT 20";
+            String SQL = "SELECT id_produto, nome, codigo, valor, status, id_unidade_medida FROM pdv.produto WHERE status = ? LIMIT 20";
             PreparedStatement ps = conn.prepareStatement(SQL);
             
-            ResultSet rs = ps.executeQuery();
+            ps.setBoolean(1, Boolean.TRUE);
             
+            ResultSet rs = ps.executeQuery();
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -149,7 +150,7 @@ public class ProdutoDAO extends DAO<Produto> {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "SELECT id_produto, nome, codigo, valor, status, id_unidade_medida FROM pdv.produto WHERE nome ILIKE ? ";
+            String SQL = "SELECT id_produto, nome, codigo, valor, status, id_unidade_medida FROM pdv.produto WHERE status = ? AND nome ILIKE ? ";
             if (codigo != null && codigo > 0) {
                 SQL += "AND codigo = ? ";
             }
@@ -157,13 +158,13 @@ public class ProdutoDAO extends DAO<Produto> {
             
             PreparedStatement ps = conn.prepareStatement(SQL);
             
-            ps.setString(1, "%"+ nome +"%");
+            ps.setBoolean(1, Boolean.TRUE);
+            ps.setString(2, "%"+ nome +"%");
             if (codigo != null && codigo > 0) {
-                ps.setInt(2, codigo);
+                ps.setInt(3, codigo);
             }
             
             ResultSet rs = ps.executeQuery();
-            
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -191,13 +192,13 @@ public class ProdutoDAO extends DAO<Produto> {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "SELECT id_produto, nome, codigo, valor, status, id_unidade_medida FROM pdv.produto LIMIT ?";
+            String SQL = "SELECT id_produto, nome, codigo, valor, status, id_unidade_medida FROM pdv.produto WHERE status = ? LIMIT ?";
             PreparedStatement ps = conn.prepareStatement(SQL);
             
-            ps.setInt(1, maxResult);
+            ps.setBoolean(1, Boolean.TRUE);
+            ps.setInt(2, maxResult);
             
             ResultSet rs = ps.executeQuery();
-            
             LogUtil.logSQL(ps);
             
             while (rs.next()) {
@@ -230,7 +231,6 @@ public class ProdutoDAO extends DAO<Produto> {
             ps.setInt(1, id);
             
             ResultSet rs = ps.executeQuery();
-            
             LogUtil.logSQL(ps);
             
             Produto produto = null;
