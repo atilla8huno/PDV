@@ -14,12 +14,13 @@ import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.swing.JFrame;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author @atilla8huno
  */
-public class FuncionarioFrame extends JFrame implements IFrame<Funcionario> {
+public class FuncionarioFrame extends FrameUtil implements IFrame<Funcionario> {
 
     private Funcionario entidade;
     private FuncionarioServico servico;
@@ -34,7 +35,7 @@ public class FuncionarioFrame extends JFrame implements IFrame<Funcionario> {
     /**
      * Método construtor
      */
-    public FuncionarioFrame() {
+    public FuncionarioFrame() throws PDVException {
         initComponents();
         
         funcionarios = new ArrayList();
@@ -45,7 +46,7 @@ public class FuncionarioFrame extends JFrame implements IFrame<Funcionario> {
         try {
             servico = new FuncionarioServico();
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
         
         preencherComboBoxCargo();
@@ -104,7 +105,7 @@ public class FuncionarioFrame extends JFrame implements IFrame<Funcionario> {
         jComboBoxCargoFiltro = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Caso de Uso: Cargo");
+        setTitle("Caso de Uso: Funcionário");
         setResizable(false);
 
         jPanelPrincipal.setLayout(null);
@@ -303,7 +304,7 @@ public class FuncionarioFrame extends JFrame implements IFrame<Funcionario> {
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
 
-        System.exit(0);
+        dispose();
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
@@ -331,7 +332,7 @@ public class FuncionarioFrame extends JFrame implements IFrame<Funcionario> {
         try {
             validarSenha();
         } catch (Exception e) {
-            MensagemUtil.addMensagemErro(e.getMessage());
+            addMensagemErro(e.getMessage());
         }
     }//GEN-LAST:event_jPasswordFieldSenhaFocusLost
 
@@ -355,7 +356,11 @@ public class FuncionarioFrame extends JFrame implements IFrame<Funcionario> {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FuncionarioFrame().setVisible(true);
+                try {
+                    new FuncionarioFrame().setVisible(true);
+                } catch (PDVException ex) {
+                    MensagemUtil.addMensagemErro(ex.getMessage());
+                }
             }
         });
     }
@@ -419,7 +424,7 @@ public class FuncionarioFrame extends JFrame implements IFrame<Funcionario> {
                 jComboBoxCargoFiltro.addItem(cargo.getNome());
             }
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -433,11 +438,11 @@ public class FuncionarioFrame extends JFrame implements IFrame<Funcionario> {
             preencherEntidade();
             
             getServico().salvar(getEntidade());
-            MensagemUtil.addMensagemSalvoSucesso();
+            addMensagemSalvoSucesso();
             
             limparFormulario(jPanelFormulario);
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -451,9 +456,9 @@ public class FuncionarioFrame extends JFrame implements IFrame<Funcionario> {
             
             getServico().excluir(getEntidade());
             pesquisar();
-            MensagemUtil.addMensagemExcluidoSucesso();
+            addMensagemExcluidoSucesso();
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -467,7 +472,7 @@ public class FuncionarioFrame extends JFrame implements IFrame<Funcionario> {
             
             jTabbedPaneAbas.setSelectedComponent(jPanelFormulario);
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -488,7 +493,7 @@ public class FuncionarioFrame extends JFrame implements IFrame<Funcionario> {
             
             modeloTabela.setFuncionarios(getServico().consultarPor(nome, cargo));
         } catch (Exception e) {
-            MensagemUtil.addMensagemErro(e.getMessage());
+            addMensagemErro(e.getMessage());
         }
     }
     
@@ -614,7 +619,7 @@ public class FuncionarioFrame extends JFrame implements IFrame<Funcionario> {
             try {
                 servico = new FuncionarioServico();
             } catch (Exception ex) {
-                MensagemUtil.addMensagemErro(ex.getMessage());
+                addMensagemErro(ex.getMessage());
             }
         }
         return servico;

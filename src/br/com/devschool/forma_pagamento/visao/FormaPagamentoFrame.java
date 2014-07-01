@@ -4,16 +4,18 @@ import br.com.devschool.entidade.FormaPagamento;
 import br.com.devschool.forma_pagamento.servico.FormaPagamentoServico;
 import br.com.devschool.util.FrameUtil;
 import br.com.devschool.util.MensagemUtil;
+import br.com.devschool.util.PDVException;
 import br.com.devschool.util.template.IFrame;
 import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author @atilla8huno
  */
-public class FormaPagamentoFrame extends JFrame implements IFrame<FormaPagamento> {
+public class FormaPagamentoFrame extends FrameUtil implements IFrame<FormaPagamento> {
 
     private FormaPagamento entidade;
     private FormaPagamentoServico servico;
@@ -26,7 +28,7 @@ public class FormaPagamentoFrame extends JFrame implements IFrame<FormaPagamento
     /**
      * Método construtor
      */
-    public FormaPagamentoFrame() {
+    public FormaPagamentoFrame() throws PDVException {
         initComponents();
         
         formaPagamentos = new ArrayList<FormaPagamento>();
@@ -36,7 +38,7 @@ public class FormaPagamentoFrame extends JFrame implements IFrame<FormaPagamento
         try {
             servico = new FormaPagamentoServico();
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
 
@@ -67,7 +69,7 @@ public class FormaPagamentoFrame extends JFrame implements IFrame<FormaPagamento
         jButtonPesquisar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Caso de Uso: Cargo");
+        setTitle("Caso de Uso: Forma de Pagamento");
         setResizable(false);
 
         jPanelPrincipal.setLayout(null);
@@ -228,7 +230,7 @@ public class FormaPagamentoFrame extends JFrame implements IFrame<FormaPagamento
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
 
-        System.exit(0);
+        dispose();
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
@@ -271,7 +273,11 @@ public class FormaPagamentoFrame extends JFrame implements IFrame<FormaPagamento
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormaPagamentoFrame().setVisible(true);
+                try {
+                    new FormaPagamentoFrame().setVisible(true);
+                } catch (PDVException ex) {
+                    MensagemUtil.addMensagemErro(ex.getMessage());
+                }
             }
         });
     }
@@ -308,11 +314,11 @@ public class FormaPagamentoFrame extends JFrame implements IFrame<FormaPagamento
             preencherEntidade();
             
             getServico().salvar(getEntidade());
-            MensagemUtil.addMensagemSalvoSucesso();
+            addMensagemSalvoSucesso();
             
             limparFormulario(jPanelFormulario);
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -326,11 +332,11 @@ public class FormaPagamentoFrame extends JFrame implements IFrame<FormaPagamento
             
             getServico().excluir(getEntidade());
             pesquisar();
-            MensagemUtil.addMensagemExcluidoSucesso();
+            addMensagemExcluidoSucesso();
             
             limparFormulario(jPanelFormulario);
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -344,7 +350,7 @@ public class FormaPagamentoFrame extends JFrame implements IFrame<FormaPagamento
             
             jTabbedPaneAbas.setSelectedComponent(jPanelFormulario);
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -358,7 +364,7 @@ public class FormaPagamentoFrame extends JFrame implements IFrame<FormaPagamento
             
             modeloTabela.setFormaPagamentos(getServico().consultarPor(descricao));
         } catch (Exception e) {
-            MensagemUtil.addMensagemErro(e.getMessage());
+            addMensagemErro(e.getMessage());
         }
     }
     
@@ -457,7 +463,7 @@ public class FormaPagamentoFrame extends JFrame implements IFrame<FormaPagamento
             try {
                 servico = new FormaPagamentoServico();
             } catch (Exception ex) {
-                MensagemUtil.addMensagemErro(ex.getMessage());
+                addMensagemErro(ex.getMessage());
             }
         }
         return servico;

@@ -4,16 +4,16 @@ import br.com.devschool.entidade.Terminal;
 import br.com.devschool.terminal.servico.TerminalServico;
 import br.com.devschool.util.FrameUtil;
 import br.com.devschool.util.MensagemUtil;
+import br.com.devschool.util.PDVException;
 import br.com.devschool.util.template.IFrame;
 import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
 
 /**
  * @author @atilla8huno
  */
-public class TerminalFrame extends JFrame implements IFrame<Terminal> {
+public class TerminalFrame extends FrameUtil implements IFrame<Terminal> {
 
     private Terminal entidade;
     private TerminalServico servico;
@@ -27,7 +27,7 @@ public class TerminalFrame extends JFrame implements IFrame<Terminal> {
     /**
      * Método construtor
      */
-    public TerminalFrame() {
+    public TerminalFrame() throws PDVException {
         initComponents();
         
         terminals = new ArrayList<Terminal>();
@@ -37,7 +37,7 @@ public class TerminalFrame extends JFrame implements IFrame<Terminal> {
         try {
             servico = new TerminalServico();
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
 
@@ -72,7 +72,7 @@ public class TerminalFrame extends JFrame implements IFrame<Terminal> {
         jCheckBoxStatusTerminalFiltro = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Caso de Uso: Cargo");
+        setTitle("Caso de Uso: Terminal");
         setResizable(false);
 
         jPanelPrincipal.setLayout(null);
@@ -245,7 +245,7 @@ public class TerminalFrame extends JFrame implements IFrame<Terminal> {
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
 
-        System.exit(0);
+        dispose();
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
@@ -288,7 +288,11 @@ public class TerminalFrame extends JFrame implements IFrame<Terminal> {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TerminalFrame().setVisible(true);
+                try {
+                    new TerminalFrame().setVisible(true);
+                } catch (PDVException ex) {
+                    MensagemUtil.addMensagemErro(ex.getMessage());
+                }
             }
         });
     }
@@ -329,11 +333,11 @@ public class TerminalFrame extends JFrame implements IFrame<Terminal> {
             preencherEntidade();
             
             getServico().salvar(getEntidade());
-            MensagemUtil.addMensagemSalvoSucesso();
+            addMensagemSalvoSucesso();
             
             limparFormulario(jPanelFormulario);
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -347,9 +351,9 @@ public class TerminalFrame extends JFrame implements IFrame<Terminal> {
             
             getServico().excluir(getEntidade());
             pesquisar();
-            MensagemUtil.addMensagemExcluidoSucesso();
+            addMensagemExcluidoSucesso();
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -363,7 +367,7 @@ public class TerminalFrame extends JFrame implements IFrame<Terminal> {
             
             jTabbedPaneAbas.setSelectedComponent(jPanelFormulario);
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -378,7 +382,7 @@ public class TerminalFrame extends JFrame implements IFrame<Terminal> {
             
             modeloTabela.setTerminals(getServico().consultarPor(numero, status));
         } catch (Exception e) {
-            MensagemUtil.addMensagemErro(e.getMessage());
+            addMensagemErro(e.getMessage());
         }
     }
     
@@ -479,7 +483,7 @@ public class TerminalFrame extends JFrame implements IFrame<Terminal> {
             try {
                 servico = new TerminalServico();
             } catch (Exception ex) {
-                MensagemUtil.addMensagemErro(ex.getMessage());
+                addMensagemErro(ex.getMessage());
             }
         }
         return servico;

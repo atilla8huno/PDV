@@ -4,16 +4,16 @@ import br.com.devschool.entidade.UnidadeMedida;
 import br.com.devschool.unidade_medida.servico.UnidadeMedidaServico;
 import br.com.devschool.util.FrameUtil;
 import br.com.devschool.util.MensagemUtil;
+import br.com.devschool.util.PDVException;
 import br.com.devschool.util.template.IFrame;
 import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
 
 /**
  * @author @atilla8huno
  */
-public class UnidadeMedidaFrame extends JFrame implements IFrame<UnidadeMedida> {
+public class UnidadeMedidaFrame extends FrameUtil implements IFrame<UnidadeMedida> {
 
     private UnidadeMedida entidade;
     private UnidadeMedidaServico servico;
@@ -27,17 +27,17 @@ public class UnidadeMedidaFrame extends JFrame implements IFrame<UnidadeMedida> 
     /**
      * Método construtor
      */
-    public UnidadeMedidaFrame() {
+    public UnidadeMedidaFrame() throws PDVException {
         initComponents();
         
-        unidadeMedidas = new ArrayList<UnidadeMedida>();
+        unidadeMedidas = new ArrayList();
         modeloTabela = new UnidadeMedidaTableModel(unidadeMedidas);
         jTableUnidadeMedidas.setModel(modeloTabela);
         
         try {
             servico = new UnidadeMedidaServico();
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
 
@@ -72,7 +72,7 @@ public class UnidadeMedidaFrame extends JFrame implements IFrame<UnidadeMedida> 
         jTextFieldSiglaUnidadeMedidaFiltro = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Caso de Uso: Cargo");
+        setTitle("Caso de Uso: Unidade de Medida");
         setResizable(false);
 
         jPanelPrincipal.setLayout(null);
@@ -257,7 +257,7 @@ public class UnidadeMedidaFrame extends JFrame implements IFrame<UnidadeMedida> 
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
 
-        System.exit(0);
+        dispose();
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
@@ -318,7 +318,11 @@ public class UnidadeMedidaFrame extends JFrame implements IFrame<UnidadeMedida> 
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UnidadeMedidaFrame().setVisible(true);
+                try {
+                    new UnidadeMedidaFrame().setVisible(true);
+                } catch (PDVException ex) {
+                    MensagemUtil.addMensagemErro(ex.getMessage());
+                }
             }
         });
     }
@@ -359,11 +363,11 @@ public class UnidadeMedidaFrame extends JFrame implements IFrame<UnidadeMedida> 
             preencherEntidade();
             
             getServico().salvar(getEntidade());
-            MensagemUtil.addMensagemSalvoSucesso();
+            addMensagemSalvoSucesso();
             
             limparFormulario(jPanelFormulario);
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -377,9 +381,9 @@ public class UnidadeMedidaFrame extends JFrame implements IFrame<UnidadeMedida> 
             
             getServico().excluir(getEntidade());
             pesquisar();
-            MensagemUtil.addMensagemExcluidoSucesso();
+            addMensagemExcluidoSucesso();
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -393,7 +397,7 @@ public class UnidadeMedidaFrame extends JFrame implements IFrame<UnidadeMedida> 
             
             jTabbedPaneAbas.setSelectedComponent(jPanelFormulario);
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -408,7 +412,7 @@ public class UnidadeMedidaFrame extends JFrame implements IFrame<UnidadeMedida> 
             
             modeloTabela.setUnidadeMedidas(getServico().consultarPor(descricao, sigla));
         } catch (Exception e) {
-            MensagemUtil.addMensagemErro(e.getMessage());
+            addMensagemErro(e.getMessage());
         }
     }
     
@@ -511,7 +515,7 @@ public class UnidadeMedidaFrame extends JFrame implements IFrame<UnidadeMedida> 
             try {
                 servico = new UnidadeMedidaServico();
             } catch (Exception ex) {
-                MensagemUtil.addMensagemErro(ex.getMessage());
+                addMensagemErro(ex.getMessage());
             }
         }
         return servico;

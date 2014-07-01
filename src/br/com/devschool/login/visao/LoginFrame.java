@@ -9,6 +9,7 @@ package br.com.devschool.login.visao;
 import br.com.devschool.entidade.Funcionario;
 import br.com.devschool.funcionario.servico.FuncionarioServico;
 import br.com.devschool.funcionario.visao.FuncionarioFrame;
+import br.com.devschool.principal.visao.PrincipalFrame;
 import br.com.devschool.util.FrameUtil;
 import br.com.devschool.util.MensagemUtil;
 import br.com.devschool.util.PDVException;
@@ -179,7 +180,8 @@ public class LoginFrame extends javax.swing.JFrame {
                 throw new PDVException("CPF/Senha incorretos.");
             } else {
                 FrameUtil.funcionarioLogado = funcionario;
-                new FuncionarioFrame().setVisible(Boolean.TRUE);
+                new PrincipalFrame().setVisible(Boolean.TRUE);
+                dispose();
             }
         } catch (Exception e) {
             MensagemUtil.addMensagemErro(e.getMessage());

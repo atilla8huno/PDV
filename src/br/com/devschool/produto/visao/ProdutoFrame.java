@@ -6,16 +6,18 @@ import br.com.devschool.produto.servico.ProdutoServico;
 import br.com.devschool.unidade_medida.servico.UnidadeMedidaServico;
 import br.com.devschool.util.FrameUtil;
 import br.com.devschool.util.MensagemUtil;
+import br.com.devschool.util.PDVException;
 import br.com.devschool.util.template.IFrame;
 import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author @atilla8huno
  */
-public class ProdutoFrame extends JFrame implements IFrame<Produto> {
+public class ProdutoFrame extends FrameUtil implements IFrame<Produto> {
 
     private Produto entidade;
     private ProdutoServico servico;
@@ -30,7 +32,7 @@ public class ProdutoFrame extends JFrame implements IFrame<Produto> {
     /**
      * Método construtor
      */
-    public ProdutoFrame() {
+    public ProdutoFrame() throws PDVException {
         initComponents();
         
         produtos = new ArrayList();
@@ -41,7 +43,7 @@ public class ProdutoFrame extends JFrame implements IFrame<Produto> {
         try {
             servico = new ProdutoServico();
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
         
         preencherComboBoxUnidadeMedida();
@@ -82,7 +84,7 @@ public class ProdutoFrame extends JFrame implements IFrame<Produto> {
         jTextFieldCodigoProdutoFiltro = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Caso de Uso: Cargo");
+        setTitle("Caso de Uso: Produto");
         setResizable(false);
 
         jPanelPrincipal.setLayout(null);
@@ -280,7 +282,7 @@ public class ProdutoFrame extends JFrame implements IFrame<Produto> {
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
 
-        System.exit(0);
+        dispose();
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
@@ -331,7 +333,11 @@ public class ProdutoFrame extends JFrame implements IFrame<Produto> {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ProdutoFrame().setVisible(true);
+                try {
+                    new ProdutoFrame().setVisible(true);
+                } catch (PDVException ex) {
+                    MensagemUtil.addMensagemErro(ex.getMessage());
+                }
             }
         });
     }
@@ -380,7 +386,7 @@ public class ProdutoFrame extends JFrame implements IFrame<Produto> {
                 jComboBoxUnidadeMedidaProduto.addItem(unidade.getDescricao());
             }
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
         
     }
@@ -394,11 +400,11 @@ public class ProdutoFrame extends JFrame implements IFrame<Produto> {
             preencherEntidade();
             
             getServico().salvar(getEntidade());
-            MensagemUtil.addMensagemSalvoSucesso();
+            addMensagemSalvoSucesso();
             
             limparFormulario(jPanelFormulario);
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -412,9 +418,9 @@ public class ProdutoFrame extends JFrame implements IFrame<Produto> {
             
             getServico().excluir(getEntidade());
             pesquisar();
-            MensagemUtil.addMensagemExcluidoSucesso();
+            addMensagemExcluidoSucesso();
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -428,7 +434,7 @@ public class ProdutoFrame extends JFrame implements IFrame<Produto> {
             
             jTabbedPaneAbas.setSelectedComponent(jPanelFormulario);
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -443,7 +449,7 @@ public class ProdutoFrame extends JFrame implements IFrame<Produto> {
             
             modeloTabela.setProdutos(getServico().consultarPor(nome, codigo));
         } catch (Exception e) {
-            MensagemUtil.addMensagemErro(e.getMessage());
+            addMensagemErro(e.getMessage());
         }
     }
     
@@ -562,7 +568,7 @@ public class ProdutoFrame extends JFrame implements IFrame<Produto> {
             try {
                 servico = new ProdutoServico();
             } catch (Exception ex) {
-                MensagemUtil.addMensagemErro(ex.getMessage());
+                addMensagemErro(ex.getMessage());
             }
         }
         return servico;

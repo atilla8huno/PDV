@@ -1,5 +1,6 @@
 package br.com.devschool.util.infra_estrutura;
 
+import br.com.devschool.util.FrameUtil;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,13 +18,15 @@ public class ConnectionFactory {
 
     private static final String url = "jdbc:postgresql://localhost:5432/desenvolvimento";
     private static final String driver = "org.postgresql.Driver";
-    private static final String usuario = "postgres";
-    private static final String senha = "123456";
+    private static final String senha = "root";
     public static String status = "Conexão vazia";
 
     public static Connection getConnection() {
         Connection conn = null;
         try {
+            String usuario =
+                    FrameUtil.funcionarioLogado.isTransient() ? 
+                    "postgres" : FrameUtil.funcionarioLogado.getCargo().getPerfil();
             Class.forName(driver);
             conn = DriverManager.getConnection(url, usuario, senha);
             status = "Conectado!";

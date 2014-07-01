@@ -4,17 +4,17 @@ import br.com.devschool.entidade.Cargo;
 import br.com.devschool.cargo.servico.CargoServico;
 import br.com.devschool.util.FrameUtil;
 import br.com.devschool.util.MensagemUtil;
+import br.com.devschool.util.PDVException;
 import br.com.devschool.util.enumerador.PerfilEnum;
 import br.com.devschool.util.template.IFrame;
 import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
 
 /**
  * @author @atilla8huno
  */
-public class CargoFrame extends JFrame implements IFrame<Cargo> {
+public class CargoFrame extends FrameUtil implements IFrame<Cargo> {
 
     private Cargo entidade;
     private CargoServico servico;
@@ -28,19 +28,19 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
     /**
      * Método construtor
      */
-    public CargoFrame() {
+    public CargoFrame() throws PDVException {
         initComponents();
-        
-        cargos = new ArrayList<Cargo>();
+
+        cargos = new ArrayList();
         modeloTabela = new CargoTableModel(cargos);
         jTableCargos.setModel(modeloTabela);
-        
+
         try {
             servico = new CargoServico();
-        } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+        } catch (PDVException ex) {
+            addMensagemErro(ex.getMessage());
         }
-        
+
         preencherComboBoxPerfil();
     }
 
@@ -250,7 +250,7 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
 
-        System.exit(0);
+        dispose();
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
@@ -293,7 +293,11 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CargoFrame().setVisible(true);
+                try {
+                    new CargoFrame().setVisible(true);
+                } catch (PDVException ex) {
+                    MensagemUtil.addMensagemErro(ex.getMessage());
+                }
             }
         });
     }
@@ -334,11 +338,11 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
             preencherEntidade();
             
             getServico().salvar(getEntidade());
-            MensagemUtil.addMensagemSalvoSucesso();
+            addMensagemSalvoSucesso();
             
             limparFormulario(jPanelFormulario);
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -352,9 +356,9 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
             
             getServico().excluir(getEntidade());
             pesquisar();
-            MensagemUtil.addMensagemExcluidoSucesso();
+            addMensagemExcluidoSucesso();
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -368,7 +372,7 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
             
             jTabbedPaneAbas.setSelectedComponent(jPanelFormulario);
         } catch (Exception ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+            addMensagemErro(ex.getMessage());
         }
     }
     
@@ -398,7 +402,7 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
             
             modeloTabela.setCargos(getServico().consultarPor(nome, perfil));
         } catch (Exception e) {
-            MensagemUtil.addMensagemErro(e.getMessage());
+            addMensagemErro(e.getMessage());
         }
     }
     
@@ -507,7 +511,7 @@ public class CargoFrame extends JFrame implements IFrame<Cargo> {
             try {
                 servico = new CargoServico();
             } catch (Exception ex) {
-                MensagemUtil.addMensagemErro(ex.getMessage());
+                addMensagemErro(ex.getMessage());
             }
         }
         return servico;
