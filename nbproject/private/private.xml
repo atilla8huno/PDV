@@ -3,16 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/util/infra_estrutura/ConnectionFactory.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/funcionario/visao/FuncionarioFrame.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/util/enumerador/PerfilEnum.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/util/FrameUtil.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/entidade/Funcionario.java</file>
             <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/principal/visao/PrincipalFrame.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/funcionario/servico/FuncionarioServico.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/entidade/Cargo.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/cargo/visao/CargoFrame.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/funcionario/servico/FuncionarioDAO.java</file>
+            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/login/visao/LoginFrame.java</file>
         </group>
     </open-files>
 </project-private>
