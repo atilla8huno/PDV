@@ -1,4 +1,6 @@
-﻿CREATE TABLE pdv.unidade_medida (
+﻿CREATE SCHEMA pdv;
+
+CREATE TABLE pdv.unidade_medida (
   id_unidade_medida SERIAL NOT NULL PRIMARY KEY,
   descricao CHARACTER VARYING(45) NOT NULL,
   sigla CHARACTER VARYING(3) NOT NULL
@@ -104,6 +106,16 @@ GRANT ALL ON TABLE pdv.unidade_medida TO administrador;
 GRANT ALL ON TABLE pdv.venda TO administrador;
 GRANT ALL ON TABLE pdv.venda_forma_pagamento TO administrador;
 GRANT ALL ON TABLE pdv.venda_produto TO administrador;
+GRANT ALL ON SEQUENCE pdv.cargo_id_cargo_seq TO administrador;
+GRANT ALL ON SEQUENCE pdv.funcionario_id_funcionario_seq TO administrador;
+GRANT ALL ON SEQUENCE pdv.forma_pagamento_id_forma_pagamento_seq TO administrador;
+GRANT ALL ON SEQUENCE pdv.movimento_caixa_id_movimento_caixa_seq TO administrador;
+GRANT ALL ON SEQUENCE pdv.produto_id_produto_seq TO administrador;
+GRANT ALL ON SEQUENCE pdv.terminal_id_terminal_seq TO administrador;
+GRANT ALL ON SEQUENCE pdv.unidade_medida_id_unidade_medida_seq TO administrador;
+GRANT ALL ON SEQUENCE pdv.venda_id_venda_seq TO administrador;
+GRANT ALL ON SEQUENCE pdv.venda_forma_pagamento_id_venda_forma_pagamento_seq TO administrador;
+GRANT ALL ON SEQUENCE pdv.venda_produto_id_venda_produto_seq TO administrador;
 
 GRANT ALL ON DATABASE desenvolvimento TO desenvolvedor;
 GRANT ALL ON SCHEMA pdv TO desenvolvedor;
@@ -117,4 +129,13 @@ GRANT ALL ON TABLE pdv.unidade_medida TO desenvolvedor;
 GRANT ALL ON TABLE pdv.venda TO desenvolvedor;
 GRANT ALL ON TABLE pdv.venda_forma_pagamento TO desenvolvedor;
 GRANT ALL ON TABLE pdv.venda_produto TO desenvolvedor;
-
+GRANT ALL ON SEQUENCE pdv.cargo_id_cargo_seq TO desenvolvedor;
+GRANT ALL ON SEQUENCE pdv.funcionario_id_funcionario_seq TO desenvolvedor;
+GRANT ALL ON SEQUENCE pdv.forma_pagamento_id_forma_pagamento_seq TO desenvolvedor;
+GRANT ALL ON SEQUENCE pdv.movimento_caixa_id_movimento_caixa_seq TO desenvolvedor;
+GRANT ALL ON SEQUENCE pdv.produto_id_produto_seq TO desenvolvedor;
+GRANT ALL ON SEQUENCE pdv.terminal_id_terminal_seq TO desenvolvedor;
+GRANT ALL ON SEQUENCE pdv.unidade_medida_id_unidade_medida_seq TO desenvolvedor;
+GRANT ALL ON SEQUENCE pdv.venda_id_venda_seq TO desenvolvedor;
+GRANT ALL ON SEQUENCE pdv.venda_forma_pagamento_id_venda_forma_pagamento_seq TO desenvolvedor;
+GRANT ALL ON SEQUENCE pdv.venda_produto_id_venda_produto_seq TO desenvolvedor;

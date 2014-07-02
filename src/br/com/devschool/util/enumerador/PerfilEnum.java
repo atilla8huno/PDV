@@ -5,12 +5,20 @@ import java.util.List;
 
 public enum PerfilEnum {
 
-    DESENVOLVEDOR, ATENDENTE, SUPERVISOR, ADMINISTRADOR;
+    DESENVOLVEDOR("desenvolvedor"), ATENDENTE("atendente"), 
+    SUPERVISOR("supervisor"), ADMINISTRADOR("administrador");
     
-    private PerfilEnum() {
+    private String nome;
+    
+    private PerfilEnum(String nome) {
+        this.nome = nome;
     }
 
-    public static List<PerfilEnum> listar() {
+    public String getNome() {
+        return nome;
+    }
+    
+    public static List<PerfilEnum> valuesAsList() {
         return Arrays.asList(values());
     }
 }

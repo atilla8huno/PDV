@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 public abstract class FrameUtil extends JFrame {
-
+    
     public FrameUtil() throws PDVException {
         if (FrameUtil.funcionarioLogado == null || FrameUtil.funcionarioLogado.isTransient()) {
             new LoginFrame().setVisible(Boolean.TRUE);

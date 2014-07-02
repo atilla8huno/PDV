@@ -4,6 +4,7 @@ import br.com.devschool.entidade.Funcionario;
 import br.com.devschool.entidade.Cargo;
 import br.com.devschool.funcionario.servico.FuncionarioServico;
 import br.com.devschool.cargo.servico.CargoServico;
+import br.com.devschool.cargo.visao.CargoFrame;
 import br.com.devschool.util.DateUtil;
 import br.com.devschool.util.FrameUtil;
 import br.com.devschool.util.MensagemUtil;
@@ -14,8 +15,6 @@ import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author @atilla8huno
@@ -90,6 +89,7 @@ public class FuncionarioFrame extends FrameUtil implements IFrame<Funcionario> {
         }
         jLabel7 = new javax.swing.JLabel();
         jPasswordFieldSenha = new javax.swing.JPasswordField();
+        jButtonNovoCargo = new javax.swing.JButton();
         jPanelConsulta = new javax.swing.JPanel();
         jPanelAcaoConsulta = new javax.swing.JPanel();
         jButtonEditar = new javax.swing.JButton();
@@ -187,6 +187,15 @@ public class FuncionarioFrame extends FrameUtil implements IFrame<Funcionario> {
         });
         jPanelCampos.add(jPasswordFieldSenha);
         jPasswordFieldSenha.setBounds(30, 160, 100, 20);
+
+        jButtonNovoCargo.setText("Novo");
+        jButtonNovoCargo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNovoCargoActionPerformed(evt);
+            }
+        });
+        jPanelCampos.add(jButtonNovoCargo);
+        jButtonNovoCargo.setBounds(610, 100, 90, 23);
 
         jPanelFormulario.add(jPanelCampos);
         jPanelCampos.setBounds(10, 10, 790, 440);
@@ -336,6 +345,15 @@ public class FuncionarioFrame extends FrameUtil implements IFrame<Funcionario> {
         }
     }//GEN-LAST:event_jPasswordFieldSenhaFocusLost
 
+    private void jButtonNovoCargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovoCargoActionPerformed
+        
+        try {
+            new CargoFrame().setVisible(Boolean.TRUE);
+        } catch (PDVException e) {
+            addMensagemErro(e.getMessage());
+        }
+    }//GEN-LAST:event_jButtonNovoCargoActionPerformed
+
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -370,6 +388,7 @@ public class FuncionarioFrame extends FrameUtil implements IFrame<Funcionario> {
     private javax.swing.JButton jButtonFechar;
     private javax.swing.JButton jButtonLimpar;
     private javax.swing.JButton jButtonLimparConsulta;
+    private javax.swing.JButton jButtonNovoCargo;
     private javax.swing.JButton jButtonPesquisar;
     private javax.swing.JButton jButtonSalvar;
     private javax.swing.JComboBox jComboBoxCargo;

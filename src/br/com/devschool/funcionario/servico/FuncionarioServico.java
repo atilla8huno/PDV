@@ -239,6 +239,19 @@ public class FuncionarioServico extends Servico<Funcionario> {
         }
     }
     
+    public Funcionario consultarPor(String cpf) throws PDVException {
+        if (cpf == null || cpf.equals("") || cpf.equals("   .   .   -  ")) {
+            throw new PDVException("CPF deve ser preenchido corretamente!");
+        }
+        
+        try {
+            dao = new FuncionarioDAO(conn);
+            return dao.consultarPor(cpf);
+        } catch (Exception e) {
+            throw new PDVException(e);
+        }
+    }
+    
     private void iniciarTransacao() throws Exception {
         conn.setAutoCommit(Boolean.FALSE);
     }

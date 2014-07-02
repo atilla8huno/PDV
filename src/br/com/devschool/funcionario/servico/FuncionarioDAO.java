@@ -324,4 +324,46 @@ public class FuncionarioDAO extends DAO<Funcionario> {
             ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
+    
+    protected Funcionario consultarPor(String cpf) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            if (conn == null || conn.isClosed()) {
+                conn = ConnectionFactory.getConnection();
+            }
+            String SQL = "SELECT id_funcionario, nome, data_admissao, status, cpf, senha, id_cargo "
+                    + "FROM pdv.funcionario WHERE cpf = ?";
+            ps = conn.prepareStatement(SQL);
+            
+            ps.setString(1, cpf);
+            
+            rs = ps.executeQuery();
+            LogUtil.logSQL(ps);
+            
+            Funcionario funcionario = null;
+            if (rs.next()) {
+                boolean status = rs.getBoolean(4);
+                
+                if (!status) {
+                    throw new PDVException("Funcionário encontra-se inativo!");
+                }
+                
+                Integer id = rs.getInt(1);
+                String nome = rs.getString(2);
+                java.util.Date dataAdmissao = rs.getDate(3);
+                String _cpf = rs.getString(5);
+                String senha = rs.getString(6);
+                Cargo cargo = new CargoServico().consultarPor(rs.getInt(7));
+                
+                funcionario = new Funcionario(id, nome, dataAdmissao, status, _cpf, senha, cargo);
+            }
+            
+            return funcionario;
+        } catch (Exception e){
+            throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
+        }
+    }
 }
