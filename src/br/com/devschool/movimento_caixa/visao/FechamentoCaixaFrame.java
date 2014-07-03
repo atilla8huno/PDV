@@ -103,13 +103,13 @@ public class FechamentoCaixaFrame extends FrameUtil {
 
         jLabel2.setText("Fundo do Fechamento:");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(50, 240, 130, 20);
+        jLabel2.setBounds(410, 60, 130, 20);
         jPanel1.add(jTextFieldFundoFechamento);
-        jTextFieldFundoFechamento.setBounds(50, 260, 110, 20);
+        jTextFieldFundoFechamento.setBounds(410, 80, 110, 20);
 
         jLabel4.setText("CPF Supervisor:");
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(50, 300, 110, 20);
+        jLabel4.setBounds(410, 120, 110, 20);
 
         jFormattedTextFieldCpfSupervisor.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -117,13 +117,13 @@ public class FechamentoCaixaFrame extends FrameUtil {
             }
         });
         jPanel1.add(jFormattedTextFieldCpfSupervisor);
-        jFormattedTextFieldCpfSupervisor.setBounds(50, 320, 110, 20);
+        jFormattedTextFieldCpfSupervisor.setBounds(410, 140, 110, 20);
 
         jLabel5.setText("Senha Supervisor:");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(50, 360, 110, 20);
+        jLabel5.setBounds(410, 180, 110, 20);
         jPanel1.add(jPasswordFieldSenhaSupervisor);
-        jPasswordFieldSenhaSupervisor.setBounds(50, 380, 110, 20);
+        jPasswordFieldSenhaSupervisor.setBounds(410, 200, 110, 20);
 
         jButtonFecharCaixa.setText("Fechar Caixa");
         jButtonFecharCaixa.addActionListener(new java.awt.event.ActionListener() {
@@ -132,7 +132,7 @@ public class FechamentoCaixaFrame extends FrameUtil {
             }
         });
         jPanel1.add(jButtonFecharCaixa);
-        jButtonFecharCaixa.setBounds(50, 420, 110, 23);
+        jButtonFecharCaixa.setBounds(50, 260, 110, 40);
 
         jLabel6.setText("Senha Atendente:");
         jPanel1.add(jLabel6);
