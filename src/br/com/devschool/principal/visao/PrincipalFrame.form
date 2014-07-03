@@ -72,6 +72,14 @@
                 <Property name="text" type="java.lang.String" value="Abrir Caixa"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemFecharCaixa">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="FecharCaixa"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemFecharCaixaActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenuOpcoes">
@@ -224,10 +232,13 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JButton" name="jButtonCaixa1">
+        <Component class="javax.swing.JButton" name="jButtonFecharCaixa">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Outra Op&#xe7;&#xe3;o de Caixa"/>
+            <Property name="text" type="java.lang.String" value="Fechar Caixa"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonFecharCaixaActionPerformed"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="300" y="80" width="200" height="-1"/>

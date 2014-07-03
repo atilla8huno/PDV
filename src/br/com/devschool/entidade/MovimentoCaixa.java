@@ -1,9 +1,10 @@
 package br.com.devschool.entidade;
 
+import br.com.devschool.util.template.Entidade;
 import java.util.Date;
 import java.util.Objects;
 
-public class MovimentoCaixa {
+public class MovimentoCaixa extends Entidade {
 
     private Integer id;
     private Date dataHoraAbertura;
@@ -24,6 +25,7 @@ public class MovimentoCaixa {
     }
 
     public MovimentoCaixa() {
+        this.fundoAbertura = 100.0;
     }
 
     public Integer getId() {

@@ -1,5 +1,6 @@
-package br.com.devschool.terminal.servico;
+package br.com.devschool.movimento_caixa.servico;
 
+import br.com.devschool.entidade.MovimentoCaixa;
 import br.com.devschool.entidade.Terminal;
 import br.com.devschool.util.PDVException;
 import br.com.devschool.util.infra_estrutura.ConnectionFactory;
@@ -10,35 +11,35 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class TerminalServico extends Servico<Terminal> {
+public class MovimentoCaixaServico extends Servico<MovimentoCaixa> {
     
     private Connection conn;
-    private TerminalDAO dao;
+    private MovimentoCaixaDAO dao;
 
-    public TerminalServico() throws PDVException {
+    public MovimentoCaixaServico() throws PDVException {
         try {
             conn = ConnectionFactory.getConnection();
             conn.setAutoCommit(Boolean.FALSE);
-            dao = new TerminalDAO(conn);
+            dao = new MovimentoCaixaDAO(conn);
         } catch (Exception e) {
             throw new PDVException(e);
         }
     }
     
-    public TerminalServico(Connection conn) throws PDVException {
+    public MovimentoCaixaServico(Connection conn) throws PDVException {
         try {
             if (conn == null || conn.isClosed()) {
                 this.conn = ConnectionFactory.getConnection();
             }
             this.conn = conn;
-            dao = new TerminalDAO(this.conn);
+            dao = new MovimentoCaixaDAO(this.conn);
         } catch (Exception e) {
             throw new PDVException(e);
         }
     }
     
     @Override
-    public Terminal salvar(Terminal entidade) throws PDVException {
+    public MovimentoCaixa salvar(MovimentoCaixa entidade) throws PDVException {
         if (entidade == null) {
             throw new IllegalArgumentException("Não é possível salvar os registros, pois nenhum dado foi informado!");
         } else if (!entidade.isTransient()) {
@@ -58,7 +59,7 @@ public class TerminalServico extends Servico<Terminal> {
     }
     
     @Override
-    public Terminal salvar(Terminal entidade, Connection conn) throws PDVException {
+    public MovimentoCaixa salvar(MovimentoCaixa entidade, Connection conn) throws PDVException {
         if (entidade == null) {
             throw new IllegalArgumentException("Não é possível salvar os registros, pois nenhum dado foi informado!");
         } else if (!entidade.isTransient()) {
@@ -66,7 +67,7 @@ public class TerminalServico extends Servico<Terminal> {
         }
         
         try {
-            dao = new TerminalDAO(conn);
+            dao = new MovimentoCaixaDAO(conn);
             return dao.salvar(entidade);
         } catch (Exception e) {
             throw new PDVException(e);
@@ -74,11 +75,11 @@ public class TerminalServico extends Servico<Terminal> {
     }
 
     @Override
-    public Terminal atualizar(Terminal entidade) throws PDVException {
+    public MovimentoCaixa atualizar(MovimentoCaixa entidade) throws PDVException {
         if (entidade == null) {
             throw new IllegalArgumentException("Não é possível salvar os registros, pois nenhum dado foi informado!");
         } else if (entidade.isTransient()) {
-            throw new IllegalArgumentException("Não é possível atualizar os registros, pois nenhum Terminal foi informado!");
+            throw new IllegalArgumentException("Não é possível atualizar os registros, pois nenhum MovimentoCaixa foi informado!");
         }
         
         try {
@@ -94,15 +95,15 @@ public class TerminalServico extends Servico<Terminal> {
     }
     
     @Override
-    public Terminal atualizar(Terminal entidade, Connection conn) throws PDVException {
+    public MovimentoCaixa atualizar(MovimentoCaixa entidade, Connection conn) throws PDVException {
         if (entidade == null) {
             throw new IllegalArgumentException("Não é possível salvar os registros, pois nenhum dado foi informado!");
         } else if (entidade.isTransient()) {
-            throw new IllegalArgumentException("Não é possível atualizar os registros, pois nenhum Terminal foi informado!");
+            throw new IllegalArgumentException("Não é possível atualizar os registros, pois nenhum MovimentoCaixa foi informado!");
         }
         
         try {
-            dao = new TerminalDAO(conn);
+            dao = new MovimentoCaixaDAO(conn);
             return dao.atualizar(entidade);
         } catch (Exception e) {
             throw new PDVException(e);
@@ -110,18 +111,18 @@ public class TerminalServico extends Servico<Terminal> {
     }
 
     @Override
-    public void excluir(Terminal entidade) throws PDVException {
+    public void excluir(MovimentoCaixa entidade) throws PDVException {
         if (entidade == null || entidade.isTransient()) {
-            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum Terminal foi informado!");
+            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum MovimentoCaixa foi informado!");
         }
         
         excluir(entidade.getId());
     }
     
     @Override
-    public void excluir(Terminal entidade, Connection conn) throws PDVException {
+    public void excluir(MovimentoCaixa entidade, Connection conn) throws PDVException {
         if (entidade == null || entidade.isTransient()) {
-            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum Terminal foi informado!");
+            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum MovimentoCaixa foi informado!");
         }
         
         excluir(entidade.getId(), conn);
@@ -130,7 +131,7 @@ public class TerminalServico extends Servico<Terminal> {
     @Override
     public void excluir(Integer id) throws PDVException {
         if (id == null || id == 0) {
-            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum Terminal foi informado!");
+            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum MovimentoCaixa foi informado!");
         }
         
         try {
@@ -146,63 +147,33 @@ public class TerminalServico extends Servico<Terminal> {
     @Override
     public void excluir(Integer id, Connection conn) throws PDVException {
         if (id == null || id == 0) {
-            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum Terminal foi informado!");
+            throw new IllegalArgumentException("Não é possível efetivar a exclusão, pois nenhum MovimentoCaixa foi informado!");
         }
         
         try {
-            dao = new TerminalDAO(conn);
+            dao = new MovimentoCaixaDAO(conn);
             dao.excluir(id);
         } catch (Exception e) {
             throw new PDVException(e);
         }
     }
-    
-    public List<Terminal> consultarPor(Integer numero, Boolean status) throws PDVException {
-        numero = numero == null ? 0 : numero;
-        status = status == null ? Boolean.TRUE : status;
-        
-        try {
-            dao = new TerminalDAO(conn);
-            return dao.consultarPor(numero, status);
-        } catch (Exception e) {
-            throw new PDVException(e);
-        }
-    }
 
     @Override
-    public List<Terminal> consultar() throws PDVException {
+    public List<MovimentoCaixa> consultar() throws PDVException {
         try {
-            dao = new TerminalDAO(conn);
+            dao = new MovimentoCaixaDAO(conn);
             return dao.consultar();
         } catch (Exception e) {
             throw new PDVException(e);
         }
     }
-    
-    public List<Terminal> consultarDisponiveis() throws PDVException {
-        try {
-            dao = new TerminalDAO(conn);
-            return dao.consultarDisponiveis();
-        } catch (Exception e) {
-            throw new PDVException(e);
-        }
-    }
-    
-    public List<Terminal> consultarDisponiveisPor(String cpf) throws PDVException {
-        try {
-            dao = new TerminalDAO(conn);
-            return dao.consultarDisponiveisPor(cpf);
-        } catch (Exception e) {
-            throw new PDVException(e);
-        }
-    }
 
     @Override
-    public List<Terminal> consultar(int maxResult) throws PDVException {
+    public List<MovimentoCaixa> consultar(int maxResult) throws PDVException {
         maxResult = maxResult < 1 ? 20 : maxResult > 30 ? 30 : maxResult;
         
         try {
-            dao = new TerminalDAO(conn);
+            dao = new MovimentoCaixaDAO(conn);
             return dao.consultar(maxResult);
         } catch (Exception e) {
             throw new PDVException(e);
@@ -210,10 +181,23 @@ public class TerminalServico extends Servico<Terminal> {
     }
     
     @Override
-    public Terminal consultarPor(int id) throws PDVException {
+    public MovimentoCaixa consultarPor(int id) throws PDVException {
         try {
-            dao = new TerminalDAO(conn);
+            dao = new MovimentoCaixaDAO(conn);
             return dao.consultarPor(id);
+        } catch (Exception e) {
+            throw new PDVException(e);
+        }
+    }
+    
+    public MovimentoCaixa consultarEmAbertoPor(Terminal terminal) throws PDVException {
+        if (terminal == null || terminal.isTransient()) {
+            throw new IllegalArgumentException("Terminal inválido!");
+        }
+        
+        try {
+            dao = new MovimentoCaixaDAO(conn);
+            return dao.consultarEmAbertoPor(terminal);
         } catch (Exception e) {
             throw new PDVException(e);
         }
@@ -231,7 +215,7 @@ public class TerminalServico extends Servico<Terminal> {
         try {
             conn.rollback();
         } catch (SQLException ex) {
-            Logger.getLogger(TerminalServico.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MovimentoCaixaServico.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

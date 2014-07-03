@@ -8,6 +8,7 @@ import br.com.devschool.util.template.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,7 +128,7 @@ public class TerminalDAO extends DAO<Terminal> {
             ps = conn.prepareStatement(SQL);
 
             ps.setBoolean(1, Boolean.TRUE);
-            
+
             rs = ps.executeQuery();
             LogUtil.logSQL(ps);
 
@@ -223,6 +224,93 @@ public class TerminalDAO extends DAO<Terminal> {
         }
     }
 
+    protected List<Terminal> consultarDisponiveis() throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            List<Terminal> terminals = new ArrayList();
+            if (conn == null || conn.isClosed()) {
+                conn = ConnectionFactory.getConnection();
+            }
+
+            String SQL =  "   SELECT DISTINCT t.* "
+                        + "     FROM pdv.terminal t "
+                        + "LEFT JOIN pdv.movimento_caixa mc "
+                        + "       ON (mc.id_terminal = t.id_terminal) "
+                        + "    WHERE t.id_terminal  "
+                        + "   NOT IN ( "
+                        + "		SELECT m.id_terminal  "
+                        + "		  FROM pdv.movimento_caixa m  "
+                        + "		 WHERE m.data_hora_fechamento IS NULL "
+                        + "          ) "
+                        + "      AND t.status = TRUE ";
+            ps = conn.prepareStatement(SQL);
+
+            rs = ps.executeQuery();
+            LogUtil.logSQL(ps);
+
+            while (rs.next()) {
+                Integer id = rs.getInt(1);
+                Integer numero = rs.getInt(2);
+                Boolean status = rs.getBoolean(3);
+
+                terminals.add(new Terminal(id, numero, status));
+            }
+
+            return terminals;
+        } catch (SQLException e) {
+            throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
+        }
+    }
+    
+    protected List<Terminal> consultarDisponiveisPor(String cpf) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            List<Terminal> terminals = new ArrayList();
+            if (conn == null || conn.isClosed()) {
+                conn = ConnectionFactory.getConnection();
+            }
+
+            String SQL ="   SELECT DISTINCT t.* " +
+                        "     FROM pdv.terminal t  " +
+                        "LEFT JOIN pdv.movimento_caixa mc  " +
+                        "       ON (mc.id_terminal = t.id_terminal)  " +
+                        "    WHERE t.id_terminal   " +
+                        "       IN (  " +
+                        "	SELECT m.id_terminal   " +
+                        "	  FROM pdv.movimento_caixa m " +
+                        "    INNER JOIN pdv.funcionario f " +
+                        "	    ON f.id_funcionario = m.id_funcionario " +
+                        "	 WHERE m.data_hora_fechamento IS NULL " +
+                        "	   AND f.cpf = ? " +
+                        "	  )  " +
+                        "      AND t.status = TRUE ; ";
+            ps = conn.prepareStatement(SQL);
+
+            ps.setString(1, cpf);
+            
+            rs = ps.executeQuery();
+            LogUtil.logSQL(ps);
+
+            while (rs.next()) {
+                Integer id = rs.getInt(1);
+                Integer numero = rs.getInt(2);
+                Boolean status = rs.getBoolean(3);
+
+                terminals.add(new Terminal(id, numero, status));
+            }
+
+            return terminals;
+        } catch (SQLException e) {
+            throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
+        }
+    }
+    
     @Override
     protected Terminal consultarPor(int id) throws PDVException {
         PreparedStatement ps = null;

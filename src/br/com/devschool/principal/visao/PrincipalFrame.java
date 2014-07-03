@@ -11,6 +11,7 @@ import br.com.devschool.entidade.Funcionario;
 import br.com.devschool.forma_pagamento.visao.FormaPagamentoFrame;
 import br.com.devschool.funcionario.visao.FuncionarioFrame;
 import br.com.devschool.login.visao.LoginFrame;
+import br.com.devschool.movimento_caixa.visao.FechamentoCaixaFrame;
 import br.com.devschool.produto.visao.ProdutoFrame;
 import br.com.devschool.terminal.visao.TerminalFrame;
 import br.com.devschool.unidade_medida.visao.UnidadeMedidaFrame;
@@ -50,7 +51,7 @@ public class PrincipalFrame extends FrameUtil {
         jButtonTerminal = new javax.swing.JButton();
         jButtonUnidadeMedida = new javax.swing.JButton();
         jButtonAbrirCaixa = new javax.swing.JButton();
-        jButtonCaixa1 = new javax.swing.JButton();
+        jButtonFecharCaixa = new javax.swing.JButton();
         jButtonCaixa2 = new javax.swing.JButton();
         jButtonCaixa3 = new javax.swing.JButton();
         jButtonLogout = new javax.swing.JButton();
@@ -70,6 +71,7 @@ public class PrincipalFrame extends FrameUtil {
         jMenuItemUnidadeMedida = new javax.swing.JMenuItem();
         jMenuCaixa = new javax.swing.JMenu();
         jMenuItemAbrirCaixa = new javax.swing.JMenuItem();
+        jMenuItemFecharCaixa = new javax.swing.JMenuItem();
         jMenuOpcoes = new javax.swing.JMenu();
         jMenuItemSair = new javax.swing.JMenuItem();
 
@@ -135,9 +137,14 @@ public class PrincipalFrame extends FrameUtil {
         jPanel1.add(jButtonAbrirCaixa);
         jButtonAbrirCaixa.setBounds(300, 40, 200, 23);
 
-        jButtonCaixa1.setText("Outra Opção de Caixa");
-        jPanel1.add(jButtonCaixa1);
-        jButtonCaixa1.setBounds(300, 80, 200, 23);
+        jButtonFecharCaixa.setText("Fechar Caixa");
+        jButtonFecharCaixa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFecharCaixaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButtonFecharCaixa);
+        jButtonFecharCaixa.setBounds(300, 80, 200, 23);
 
         jButtonCaixa2.setText("Outra Opção de Caixa");
         jPanel1.add(jButtonCaixa2);
@@ -237,6 +244,14 @@ public class PrincipalFrame extends FrameUtil {
         jMenuItemAbrirCaixa.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemAbrirCaixa.setText("Abrir Caixa");
         jMenuCaixa.add(jMenuItemAbrirCaixa);
+
+        jMenuItemFecharCaixa.setText("FecharCaixa");
+        jMenuItemFecharCaixa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemFecharCaixaActionPerformed(evt);
+            }
+        });
+        jMenuCaixa.add(jMenuItemFecharCaixa);
 
         jMenuBarOpcoes.add(jMenuCaixa);
 
@@ -388,6 +403,26 @@ public class PrincipalFrame extends FrameUtil {
         sair();
     }//GEN-LAST:event_jButtonLogoutActionPerformed
 
+    private void jButtonFecharCaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharCaixaActionPerformed
+
+        try {
+            new FechamentoCaixaFrame().setVisible(Boolean.TRUE);
+            dispose();
+        } catch (PDVException ex) {
+            addMensagemErro(ex.getMessage());
+        }
+    }//GEN-LAST:event_jButtonFecharCaixaActionPerformed
+
+    private void jMenuItemFecharCaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFecharCaixaActionPerformed
+
+        try {
+            new FechamentoCaixaFrame().setVisible(Boolean.TRUE);
+            dispose();
+        } catch (PDVException ex) {
+            addMensagemErro(ex.getMessage());
+        }
+    }//GEN-LAST:event_jMenuItemFecharCaixaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -429,10 +464,10 @@ public class PrincipalFrame extends FrameUtil {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAbrirCaixa;
-    private javax.swing.JButton jButtonCaixa1;
     private javax.swing.JButton jButtonCaixa2;
     private javax.swing.JButton jButtonCaixa3;
     private javax.swing.JButton jButtonCargo;
+    private javax.swing.JButton jButtonFecharCaixa;
     private javax.swing.JButton jButtonFormaPagamento;
     private javax.swing.JButton jButtonFuncionario;
     private javax.swing.JButton jButtonLogout;
@@ -450,6 +485,7 @@ public class PrincipalFrame extends FrameUtil {
     private javax.swing.JMenu jMenuCaixa;
     private javax.swing.JMenuItem jMenuItemAbrirCaixa;
     private javax.swing.JMenuItem jMenuItemCargo;
+    private javax.swing.JMenuItem jMenuItemFecharCaixa;
     private javax.swing.JMenuItem jMenuItemFormaPagamento;
     private javax.swing.JMenuItem jMenuItemFuncionario;
     private javax.swing.JMenuItem jMenuItemProduto;

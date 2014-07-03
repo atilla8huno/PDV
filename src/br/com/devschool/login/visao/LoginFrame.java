@@ -7,14 +7,20 @@
 package br.com.devschool.login.visao;
 
 import br.com.devschool.entidade.Funcionario;
+import br.com.devschool.entidade.MovimentoCaixa;
+import br.com.devschool.entidade.Terminal;
 import br.com.devschool.funcionario.servico.FuncionarioServico;
-import br.com.devschool.funcionario.visao.FuncionarioFrame;
+import br.com.devschool.movimento_caixa.servico.MovimentoCaixaServico;
 import br.com.devschool.principal.visao.PrincipalFrame;
+import br.com.devschool.terminal.servico.TerminalServico;
 import br.com.devschool.util.FrameUtil;
 import br.com.devschool.util.MensagemUtil;
 import br.com.devschool.util.PDVException;
 import br.com.devschool.util.StringUtil;
 import br.com.devschool.util.enumerador.PerfilEnum;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  *
@@ -24,6 +30,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private FuncionarioServico servico;
     private Funcionario funcionario = null;
+    private List<Terminal> terminais = new ArrayList();
     
     /**
      * Creates new form LoginFrame
@@ -31,7 +38,7 @@ public class LoginFrame extends javax.swing.JFrame {
     public LoginFrame() {
         try {
             servico = new FuncionarioServico();
-        } catch (Exception ex) {
+        } catch (PDVException ex) {
             MensagemUtil.addMensagemErro(ex.getMessage());
         }
         initComponents();
@@ -64,8 +71,10 @@ public class LoginFrame extends javax.swing.JFrame {
         jPanelTerminal = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jComboBoxTerminal = new javax.swing.JComboBox();
+        jButtonLoginEmergencial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("DevSchool PDV - Login");
         setResizable(false);
 
         jPanelPrincipal.setLayout(null);
@@ -118,6 +127,15 @@ public class LoginFrame extends javax.swing.JFrame {
         jPanelPrincipal.add(jPanelTerminal);
         jPanelTerminal.setBounds(330, 270, 150, 70);
 
+        jButtonLoginEmergencial.setText("Emergencial");
+        jButtonLoginEmergencial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLoginEmergencialActionPerformed(evt);
+            }
+        });
+        jPanelPrincipal.add(jButtonLoginEmergencial);
+        jButtonLoginEmergencial.setBounds(350, 390, 110, 40);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -147,6 +165,12 @@ public class LoginFrame extends javax.swing.JFrame {
 
         consultarCPF();
     }//GEN-LAST:event_jFormattedTextFieldCpfFocusLost
+
+    private void jButtonLoginEmergencialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginEmergencialActionPerformed
+
+        new LoginEmergencialFrame().setVisible(Boolean.TRUE);
+        dispose();
+    }//GEN-LAST:event_jButtonLoginEmergencialActionPerformed
 
     /**
      * @param args the command line arguments
@@ -185,6 +209,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLogar;
+    private javax.swing.JButton jButtonLoginEmergencial;
     private javax.swing.JButton jButtonSair;
     private javax.swing.JComboBox jComboBoxTerminal;
     private javax.swing.JFormattedTextField jFormattedTextFieldCpf;
@@ -215,11 +240,14 @@ public class LoginFrame extends javax.swing.JFrame {
                 new PrincipalFrame().setVisible(Boolean.TRUE);
                 dispose();
             }
-        } catch (Exception e) {
+        } catch (PDVException e) {
             MensagemUtil.addMensagemErro(e.getMessage());
         }
     }
     
+    /**
+     * Este método valida os campos obrigatórios.
+     */
     private void validarCamposObrigatorios() throws PDVException {
         String cpf = jFormattedTextFieldCpf.getText();
             
@@ -230,12 +258,22 @@ public class LoginFrame extends javax.swing.JFrame {
             
             throw new PDVException("Os campos CPF e Senha devem ser preenchidos!");
         }
+        
+        if ((funcionario.getCargo().getPerfil().equals(PerfilEnum.ATENDENTE.getNome()) ||
+                funcionario.getCargo().getPerfil().equals(PerfilEnum.SUPERVISOR.getNome())) &&
+                jComboBoxTerminal.getSelectedIndex() == 0) {
+            jComboBoxTerminal.setBorder(FrameUtil.BORDA_VERMELHA);
+            
+            throw new PDVException("O campo Terminal deve ser selecionado!");
+        }
     }
 
+    /**
+     * Este método consulta o funcionário pelo CPF informado.
+     */
     private void consultarCPF() {
         try {
             String cpf = jFormattedTextFieldCpf.getText();
-            
             funcionario = servico.consultarPor(cpf);
             
             if (funcionario == null || funcionario.isTransient()) {
@@ -245,6 +283,7 @@ public class LoginFrame extends javax.swing.JFrame {
                         !funcionario.getCargo().getPerfil().equals(PerfilEnum.SUPERVISOR.getNome())) {
                     jPanelTerminal.setVisible(Boolean.FALSE);
                 } else {
+                    preencherComboBoxTerminal();
                     jPanelTerminal.setVisible(Boolean.TRUE);
                 }
             }
@@ -254,7 +293,40 @@ public class LoginFrame extends javax.swing.JFrame {
         }
     }
 
-    private void abrirCaixa() {
+    /**
+     * Este método faz a abertura do caixa caso o funcionário tenha o perfil adequado.
+     */
+    private void abrirCaixa() throws PDVException {
+        MovimentoCaixa movimento = new MovimentoCaixa();
+        movimento.setDataHoraAbertura(Calendar.getInstance().getTime());
+        movimento.setFuncionario(funcionario);
         
+        for (Terminal t : terminais) {
+            if (t.getNumero().equals(Integer.parseInt(jComboBoxTerminal.getSelectedItem().toString()))) {
+                movimento.setTerminal(t);
+                break;
+            }
+        }
+        
+        new MovimentoCaixaServico().salvar(movimento);
+        
+        MensagemUtil.addMensagemInfo("Caixa aberto. Bem-vindo(a), " + funcionario.getNome() + "!");
+    }
+    
+    /**
+     * Este método percore os valores do banco de dados de cargos e popula a combobox.
+     */
+    private void preencherComboBoxTerminal() {
+        jComboBoxTerminal.removeAllItems();
+        jComboBoxTerminal.addItem(".:: SELECIONE ::.");
+        
+        try {
+            terminais = new TerminalServico().consultarDisponiveis();
+            for (Terminal t : terminais) {
+                jComboBoxTerminal.addItem(t.getNumero().toString());
+            }
+        } catch (PDVException ex) {
+            MensagemUtil.addMensagemErro(ex.getMessage());
+        }
     }
 }
