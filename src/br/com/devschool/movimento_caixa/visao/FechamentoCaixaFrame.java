@@ -25,14 +25,14 @@ public class FechamentoCaixaFrame extends FrameUtil {
     private Funcionario funcionario = null;
     private Funcionario supervisor = null;
     private List<Terminal> terminais = new ArrayList();
-    
+
     public FechamentoCaixaFrame() throws PDVException {
         try {
             servico = new FuncionarioServico();
         } catch (PDVException e) {
             addMensagemErro(e.getMessage());
         }
-        
+
         initComponents();
     }
 
@@ -158,7 +158,6 @@ public class FechamentoCaixaFrame extends FrameUtil {
     private void jFormattedTextFieldCpfFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextFieldCpfFocusLost
 
         consultarCPF();
-        preencherComboBoxTerminal();
     }//GEN-LAST:event_jFormattedTextFieldCpfFocusLost
 
     private void jFormattedTextFieldCpfSupervisorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextFieldCpfSupervisorFocusLost
@@ -231,7 +230,7 @@ public class FechamentoCaixaFrame extends FrameUtil {
         try {
             String cpf = jFormattedTextFieldCpf.getText();
             funcionario = servico.consultarPor(cpf);
-            
+
             if (funcionario == null || funcionario.isTransient()) {
                 throw new PDVException("CPF inválido.");
             } else {
@@ -242,14 +241,14 @@ public class FechamentoCaixaFrame extends FrameUtil {
             jFormattedTextFieldCpf.requestFocus();
         }
     }
-    
+
     private void consultarCPFSupervisor() {
         try {
             String cpf = jFormattedTextFieldCpfSupervisor.getText();
             supervisor = servico.consultarPor(cpf);
-            
-            if (supervisor == null || supervisor.isTransient() || 
-                    supervisor.getCargo().getPerfil().equals(PerfilEnum.ATENDENTE.getNome())) {
+
+            if (supervisor == null || supervisor.isTransient()
+                    || supervisor.getCargo().getPerfil().equals(PerfilEnum.ATENDENTE.getNome())) {
                 throw new PDVException("CPF do supervisor é inválido.");
             }
         } catch (PDVException e) {
@@ -263,7 +262,7 @@ public class FechamentoCaixaFrame extends FrameUtil {
             validarCamposObrigatorios();
             String senha = StringUtil.criptografar(new String(jPasswordFieldSenha.getPassword()));
             String senhaSupervisor = StringUtil.criptografar(new String(jPasswordFieldSenhaSupervisor.getPassword()));
-                        
+
             if (!senha.equals(funcionario.getSenha())) {
                 throw new PDVException("Senha inválida!");
             } else if (!senhaSupervisor.equals(supervisor.getSenha())) {
@@ -271,7 +270,7 @@ public class FechamentoCaixaFrame extends FrameUtil {
             } else {
                 MovimentoCaixaServico caixaServico = new MovimentoCaixaServico();
                 Double fundoCaixa = Double.parseDouble(jTextFieldFundoFechamento.getText());
-                
+
                 MovimentoCaixa caixa = new MovimentoCaixa();
                 for (Terminal t : terminais) {
                     if (t.getNumero().equals(Integer.parseInt(jComboBoxTerminal.getSelectedItem().toString()))) {
@@ -279,12 +278,12 @@ public class FechamentoCaixaFrame extends FrameUtil {
                         break;
                     }
                 }
-                
+
                 caixa.setDataHoraFechamento(Calendar.getInstance().getTime());
                 caixa.setFundoFechamento(fundoCaixa);
-                
+
                 caixaServico.atualizar(caixa);
-                
+
                 FrameUtil.funcionarioLogado = new Funcionario();
                 new LoginFrame().setVisible(Boolean.TRUE);
                 dispose();
@@ -294,19 +293,15 @@ public class FechamentoCaixaFrame extends FrameUtil {
         }
     }
 
-    private void preencherComboBoxTerminal() {
+    private void preencherComboBoxTerminal() throws PDVException {
         jComboBoxTerminal.removeAllItems();
         jComboBoxTerminal.addItem(".:: SELECIONE ::.");
-    
-        try {
-            String cpf = jFormattedTextFieldCpf.getText();
-            terminais = new TerminalServico().consultarDisponiveisPor(cpf);
-            
-            for (Terminal t : terminais) {
-                jComboBoxTerminal.addItem(t.getNumero().toString());
-            }
-        } catch (PDVException ex) {
-            MensagemUtil.addMensagemErro(ex.getMessage());
+
+        String cpf = jFormattedTextFieldCpf.getText();
+        terminais = new TerminalServico().consultarDisponiveisPor(cpf);
+
+        for (Terminal t : terminais) {
+            jComboBoxTerminal.addItem(t.getNumero().toString());
         }
     }
 
@@ -314,7 +309,7 @@ public class FechamentoCaixaFrame extends FrameUtil {
         String cpf = jFormattedTextFieldCpf.getText();
         String cpfSupervisor = jFormattedTextFieldCpfSupervisor.getText();
         String fundo = jTextFieldFundoFechamento.getText();
-            
+
         if (cpf == null || cpf.equals("") || cpf.equals("   .   .   -  ")
                 || jPasswordFieldSenha.getPassword().length == 0
                 || cpfSupervisor == null || cpfSupervisor.equals("") || cpfSupervisor.equals("   .   .   -  ")
@@ -327,7 +322,7 @@ public class FechamentoCaixaFrame extends FrameUtil {
             jPasswordFieldSenhaSupervisor.setBorder(FrameUtil.BORDA_VERMELHA);
             jComboBoxTerminal.setBorder(FrameUtil.BORDA_VERMELHA);
             jTextFieldFundoFechamento.setBorder(FrameUtil.BORDA_VERMELHA);
-            
+
             throw new PDVException("Todos os campos devem ser preenchidos!");
         }
     }
