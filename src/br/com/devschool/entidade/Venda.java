@@ -1,7 +1,9 @@
 package br.com.devschool.entidade;
 
 import br.com.devschool.util.template.Entidade;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Venda extends Entidade {
@@ -16,6 +18,9 @@ public class Venda extends Entidade {
     private Double valorPago;
     private Double valorTroco;
     private Terminal terminal;
+    
+    private transient List<VendaFormaPagamento> pagamentos;
+    private transient List<VendaProduto> produtos;
 
     public Venda(Integer id, Date dataCadastro, boolean entregaDomicilio, String nomeCliente, String enderecoCliente, String contatoCliente, Double valorTotal, Double valorPago, Double valorTroco, Terminal terminal) {
         this.id = id;
@@ -114,6 +119,28 @@ public class Venda extends Entidade {
         this.terminal = terminal;
     }
 
+    public List<VendaFormaPagamento> getPagamentos() {
+        if (pagamentos == null) {
+            pagamentos = new ArrayList();
+        }
+        return pagamentos;
+    }
+
+    public void setPagamentos(List<VendaFormaPagamento> pagamentos) {
+        this.pagamentos = pagamentos;
+    }
+
+    public List<VendaProduto> getProdutos() {
+        if (produtos == null) {
+            produtos = new ArrayList();
+        }
+        return produtos;
+    }
+
+    public void setProdutos(List<VendaProduto> produtos) {
+        this.produtos = produtos;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;

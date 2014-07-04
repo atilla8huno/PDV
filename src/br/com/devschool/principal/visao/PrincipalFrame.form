@@ -74,7 +74,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemFecharCaixa">
               <Properties>
-                <Property name="text" type="java.lang.String" value="FecharCaixa"/>
+                <Property name="text" type="java.lang.String" value="Fechar Caixa"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemFecharCaixaActionPerformed"/>

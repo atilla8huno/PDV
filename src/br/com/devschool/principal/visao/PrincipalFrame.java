@@ -245,7 +245,7 @@ public class PrincipalFrame extends FrameUtil {
         jMenuItemAbrirCaixa.setText("Abrir Caixa");
         jMenuCaixa.add(jMenuItemAbrirCaixa);
 
-        jMenuItemFecharCaixa.setText("FecharCaixa");
+        jMenuItemFecharCaixa.setText("Fechar Caixa");
         jMenuItemFecharCaixa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemFecharCaixaActionPerformed(evt);

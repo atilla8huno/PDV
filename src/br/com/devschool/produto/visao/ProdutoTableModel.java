@@ -110,17 +110,11 @@ public class ProdutoTableModel extends AbstractTableModel {
         return produtos;
     }
    
-    /**
-     * @param List<Produto>
-     */
     public void setProdutos(List<Produto> produtos) {
         this.produtos = new ArrayList(produtos);
         fireTableDataChanged();
     }
     
-    /**
-     * @param Set<Produto>
-     */
     public void setProdutos(Set<Produto> produtos) {
         this.produtos = new ArrayList(produtos);
         fireTableDataChanged();
