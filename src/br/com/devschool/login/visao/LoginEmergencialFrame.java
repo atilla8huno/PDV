@@ -283,7 +283,15 @@ public class LoginEmergencialFrame extends javax.swing.JFrame {
             } else if (!senhaSupervisor.equals(supervisor.getSenha())) {
                 throw new PDVException("Senha do supervisor é inválida!");
             } else {
+                for (Terminal terminal : terminais) {
+                    if (terminal.getNumero().toString().equals(jComboBoxTerminal.getSelectedItem())) {
+                        FrameUtil.terminalLogado = terminal;
+                        break;
+                    }
+                }
+                
                 FrameUtil.funcionarioLogado = funcionario;
+                
                 new PrincipalFrame().setVisible(Boolean.TRUE);
                 dispose();
             }

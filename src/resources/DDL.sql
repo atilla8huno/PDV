@@ -139,3 +139,11 @@ GRANT ALL ON SEQUENCE pdv.unidade_medida_id_unidade_medida_seq TO desenvolvedor;
 GRANT ALL ON SEQUENCE pdv.venda_id_venda_seq TO desenvolvedor;
 GRANT ALL ON SEQUENCE pdv.venda_forma_pagamento_id_venda_forma_pagamento_seq TO desenvolvedor;
 GRANT ALL ON SEQUENCE pdv.venda_produto_id_venda_produto_seq TO desenvolvedor;
+
+GRANT ALL ON SCHEMA pdv TO atendente;
+GRANT SELECT, INSERT ON TABLE pdv.venda TO atendente;
+GRANT ALL ON SEQUENCE pdv.venda_id_venda_seq TO atendente;
+
+
+
+ALTER TABLE pdv.venda_produto ADD COLUMN desconto NUMERIC(6,2) DEFAULT '0.00';

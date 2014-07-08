@@ -224,6 +224,15 @@ public class ProdutoServico extends Servico<Produto> {
         }
     }
     
+    public Produto consultarPorCodigo(Integer codigo) throws PDVException {
+        try {
+            dao = new ProdutoDAO(conn);
+            return dao.consultarPorCodigo(codigo);
+        } catch (Exception e) {
+            throw new PDVException(e);
+        }
+    }
+    
     private void iniciarTransacao() throws Exception {
         conn.setAutoCommit(Boolean.FALSE);
     }

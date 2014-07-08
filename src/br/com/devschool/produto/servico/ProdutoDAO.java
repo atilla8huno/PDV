@@ -273,4 +273,40 @@ public class ProdutoDAO extends DAO<Produto> {
             ConnectionFactory.getCloseConnection(ps, rs);
         }
     }
+    
+    protected Produto consultarPorCodigo(Integer codigo) throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            if (conn == null || conn.isClosed()) {
+                conn = ConnectionFactory.getConnection();
+            }
+            
+            String SQL = "SELECT id_produto, nome, codigo, valor, status, id_unidade_medida FROM pdv.produto WHERE codigo = ?";
+            ps = conn.prepareStatement(SQL);
+            
+            ps.setInt(1, codigo);
+            
+            rs = ps.executeQuery();
+            LogUtil.logSQL(ps);
+            
+            Produto produto = null;
+            if (rs.next()) {
+                Integer id = rs.getInt(1);
+                String nome = rs.getString(2);
+                Integer _codigo = rs.getInt(3);
+                Double valor = rs.getDouble(4);
+                boolean status = rs.getBoolean(5);
+                UnidadeMedida unidadeMedida = new UnidadeMedidaServico().consultarPor(rs.getInt(6));
+                
+                produto = new Produto(id, nome, _codigo, valor, status, unidadeMedida);
+            }
+            
+            return produto;
+        } catch (Exception e){
+            throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
+        }
+    }
 }

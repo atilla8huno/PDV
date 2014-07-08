@@ -9,14 +9,14 @@ import javax.swing.table.AbstractTableModel;
 
 public class VendaProdutoTableModel extends AbstractTableModel {
 
-    private final int COLUNA_ITEM           = 0;
-    private final int COLUNA_CODIGO         = 1;
-    private final int COLUNA_NOME_PRODUTO   = 2;
+    private final int COLUNA_ITEM = 0;
+    private final int COLUNA_CODIGO = 1;
+    private final int COLUNA_NOME_PRODUTO = 2;
     private final int COLUNA_VALOR_UNITARIO = 3;
     private final int COLUNA_UNIDADE_MEDIDA = 4;
-    private final int COLUNA_QUANTIDADE     = 5;
-    private final int COLUNA_DESCONTO       = 6;
-    private final int COLUNA_SUBTOTAL       = 7;
+    private final int COLUNA_QUANTIDADE = 5;
+    private final int COLUNA_DESCONTO = 6;
+    private final int COLUNA_SUBTOTAL = 7;
 
     private List<VendaProduto> produtos;
 
@@ -59,7 +59,7 @@ public class VendaProdutoTableModel extends AbstractTableModel {
 
         switch (columnIndex) {
             case COLUNA_ITEM:
-                return rowIndex++;
+                return ++rowIndex;
             case COLUNA_CODIGO:
                 return c.getProduto().getCodigo().toString();
             case COLUNA_NOME_PRODUTO:
@@ -71,12 +71,26 @@ public class VendaProdutoTableModel extends AbstractTableModel {
             case COLUNA_QUANTIDADE:
                 return c.getQuantidade().toString();
             case COLUNA_DESCONTO:
-                return "0.0";
+                return c.getDesconto() == null ? "0.0 %" : c.getDesconto() + " %";
             case COLUNA_SUBTOTAL:
-                return c.getQuantidade() * c.getValor();
+                return calcularSubtotal(c);
             default:
                 return c;
         }
+    }
+    
+    public void refresh() {
+        fireTableDataChanged();
+    }
+
+    private String calcularSubtotal(VendaProduto venda) {
+        if (venda.getDesconto() != null && venda.getDesconto() > 0.0) {
+            Double porcentagemDesconto = (100.0 - venda.getDesconto()) / 100.0;
+            Double valorComDesconto = porcentagemDesconto * (venda.getValor() * venda.getQuantidade());
+            return NumberFormat.getCurrencyInstance().format(valorComDesconto);
+        }
+        
+        return NumberFormat.getCurrencyInstance().format(venda.getValor() * venda.getQuantidade());
     }
 
     @Override
@@ -97,7 +111,7 @@ public class VendaProdutoTableModel extends AbstractTableModel {
             case COLUNA_DESCONTO:
                 return "Desconto";
             case COLUNA_SUBTOTAL:
-                return "Subtotal";
+                return "Subtotal do Item";
             default:
                 return "";
         }

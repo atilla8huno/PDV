@@ -18,6 +18,7 @@ import br.com.devschool.unidade_medida.visao.UnidadeMedidaFrame;
 import br.com.devschool.util.FrameUtil;
 import br.com.devschool.util.MensagemUtil;
 import br.com.devschool.util.PDVException;
+import br.com.devschool.venda.visao.VendaFrame;
 
 /**
  *
@@ -53,7 +54,7 @@ public class PrincipalFrame extends FrameUtil {
         jButtonAbrirCaixa = new javax.swing.JButton();
         jButtonFecharCaixa = new javax.swing.JButton();
         jButtonCaixa2 = new javax.swing.JButton();
-        jButtonCaixa3 = new javax.swing.JButton();
+        jButtonVenda = new javax.swing.JButton();
         jButtonLogout = new javax.swing.JButton();
         jButtonRelatorio1 = new javax.swing.JButton();
         jButtonRelatorio2 = new javax.swing.JButton();
@@ -63,6 +64,7 @@ public class PrincipalFrame extends FrameUtil {
         jLabelWallpaper = new javax.swing.JLabel();
         jMenuBarOpcoes = new javax.swing.JMenuBar();
         jMenuCadastros = new javax.swing.JMenu();
+        jMenuItemVenda = new javax.swing.JMenuItem();
         jMenuItemCargo = new javax.swing.JMenuItem();
         jMenuItemFuncionario = new javax.swing.JMenuItem();
         jMenuItemFormaPagamento = new javax.swing.JMenuItem();
@@ -86,7 +88,7 @@ public class PrincipalFrame extends FrameUtil {
             }
         });
         jPanel1.add(jButtonCargo);
-        jButtonCargo.setBounds(40, 40, 200, 23);
+        jButtonCargo.setBounds(40, 80, 200, 23);
 
         jButtonFuncionario.setText("Caso de Uso: Funcionário");
         jButtonFuncionario.addActionListener(new java.awt.event.ActionListener() {
@@ -95,7 +97,7 @@ public class PrincipalFrame extends FrameUtil {
             }
         });
         jPanel1.add(jButtonFuncionario);
-        jButtonFuncionario.setBounds(40, 80, 200, 23);
+        jButtonFuncionario.setBounds(40, 120, 200, 23);
 
         jButtonFormaPagamento.setText("Caso de Uso: Forma de Pgto");
         jButtonFormaPagamento.addActionListener(new java.awt.event.ActionListener() {
@@ -104,7 +106,7 @@ public class PrincipalFrame extends FrameUtil {
             }
         });
         jPanel1.add(jButtonFormaPagamento);
-        jButtonFormaPagamento.setBounds(40, 120, 200, 23);
+        jButtonFormaPagamento.setBounds(40, 160, 200, 23);
 
         jButtonProduto.setText("Caso de Uso: Produto");
         jButtonProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -113,7 +115,7 @@ public class PrincipalFrame extends FrameUtil {
             }
         });
         jPanel1.add(jButtonProduto);
-        jButtonProduto.setBounds(40, 160, 200, 23);
+        jButtonProduto.setBounds(40, 200, 200, 23);
 
         jButtonTerminal.setText("Caso de Uso: Terminal");
         jButtonTerminal.addActionListener(new java.awt.event.ActionListener() {
@@ -122,7 +124,7 @@ public class PrincipalFrame extends FrameUtil {
             }
         });
         jPanel1.add(jButtonTerminal);
-        jButtonTerminal.setBounds(40, 200, 200, 23);
+        jButtonTerminal.setBounds(40, 240, 200, 23);
 
         jButtonUnidadeMedida.setText("Caso de Uso: Unidade de Medida");
         jButtonUnidadeMedida.addActionListener(new java.awt.event.ActionListener() {
@@ -131,7 +133,7 @@ public class PrincipalFrame extends FrameUtil {
             }
         });
         jPanel1.add(jButtonUnidadeMedida);
-        jButtonUnidadeMedida.setBounds(40, 240, 200, 23);
+        jButtonUnidadeMedida.setBounds(40, 280, 200, 23);
 
         jButtonAbrirCaixa.setText("Abrir Caixa");
         jPanel1.add(jButtonAbrirCaixa);
@@ -150,9 +152,14 @@ public class PrincipalFrame extends FrameUtil {
         jPanel1.add(jButtonCaixa2);
         jButtonCaixa2.setBounds(300, 120, 200, 23);
 
-        jButtonCaixa3.setText("Outra Opção de Caixa");
-        jPanel1.add(jButtonCaixa3);
-        jButtonCaixa3.setBounds(300, 160, 200, 23);
+        jButtonVenda.setText("Caso de Uso: Venda");
+        jButtonVenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVendaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButtonVenda);
+        jButtonVenda.setBounds(40, 40, 200, 23);
 
         jButtonLogout.setText("Efetuar Logout");
         jButtonLogout.addActionListener(new java.awt.event.ActionListener() {
@@ -188,6 +195,15 @@ public class PrincipalFrame extends FrameUtil {
         jLabelWallpaper.setBounds(0, 0, 800, 580);
 
         jMenuCadastros.setText("Cadastros");
+
+        jMenuItemVenda.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItemVenda.setText("Caso de Uso: Venda");
+        jMenuItemVenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemVendaActionPerformed(evt);
+            }
+        });
+        jMenuCadastros.add(jMenuItemVenda);
 
         jMenuItemCargo.setText("Caso de Uso: Cargo");
         jMenuItemCargo.addActionListener(new java.awt.event.ActionListener() {
@@ -423,6 +439,24 @@ public class PrincipalFrame extends FrameUtil {
         }
     }//GEN-LAST:event_jMenuItemFecharCaixaActionPerformed
 
+    private void jButtonVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVendaActionPerformed
+
+        try {
+            new VendaFrame().setVisible(Boolean.TRUE);
+        } catch (PDVException ex) {
+            addMensagemErro(ex.getMessage());
+        }
+    }//GEN-LAST:event_jButtonVendaActionPerformed
+
+    private void jMenuItemVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVendaActionPerformed
+
+        try {
+            new VendaFrame().setVisible(Boolean.TRUE);
+        } catch (PDVException ex) {
+            addMensagemErro(ex.getMessage());
+        }
+    }//GEN-LAST:event_jMenuItemVendaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -465,7 +499,6 @@ public class PrincipalFrame extends FrameUtil {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAbrirCaixa;
     private javax.swing.JButton jButtonCaixa2;
-    private javax.swing.JButton jButtonCaixa3;
     private javax.swing.JButton jButtonCargo;
     private javax.swing.JButton jButtonFecharCaixa;
     private javax.swing.JButton jButtonFormaPagamento;
@@ -479,6 +512,7 @@ public class PrincipalFrame extends FrameUtil {
     private javax.swing.JButton jButtonRelatorio5;
     private javax.swing.JButton jButtonTerminal;
     private javax.swing.JButton jButtonUnidadeMedida;
+    private javax.swing.JButton jButtonVenda;
     private javax.swing.JLabel jLabelWallpaper;
     private javax.swing.JMenuBar jMenuBarOpcoes;
     private javax.swing.JMenu jMenuCadastros;
@@ -492,6 +526,7 @@ public class PrincipalFrame extends FrameUtil {
     private javax.swing.JMenuItem jMenuItemSair;
     private javax.swing.JMenuItem jMenuItemTerminal;
     private javax.swing.JMenuItem jMenuItemUnidadeMedida;
+    private javax.swing.JMenuItem jMenuItemVenda;
     private javax.swing.JMenu jMenuOpcoes;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

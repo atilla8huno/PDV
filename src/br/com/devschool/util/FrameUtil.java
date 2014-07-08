@@ -1,6 +1,7 @@
 package br.com.devschool.util;
 
 import br.com.devschool.entidade.Funcionario;
+import br.com.devschool.entidade.Terminal;
 import br.com.devschool.login.visao.LoginFrame;
 import java.awt.Component;
 import java.awt.Container;
@@ -24,6 +25,7 @@ public abstract class FrameUtil extends JFrame {
     }
     
     public static Funcionario funcionarioLogado = new Funcionario();
+    public static Terminal terminalLogado = new Terminal();
     
     public static Border BORDA_VERMELHA = javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 51, 51));
     public static Border BORDA_PADRAO   = javax.swing.BorderFactory.createLineBorder(new java.awt.Color(175, 175, 175));

@@ -62,6 +62,31 @@ public class VendaDAO {
         }
     }
     
+    protected Integer consultarProximoId() throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            if (conn == null || conn.isClosed()) {
+                conn = ConnectionFactory.getConnection();
+            }
+            
+            String SQLNextal = "SELECT NEXTVAL('pdv.venda_id_venda_seq')";
+            ps = conn.prepareStatement(SQLNextal);
+            rs = ps.executeQuery();
+            
+            Integer proximoId = null;
+            if (rs.next()) {
+                proximoId = rs.getInt(1);
+            }
+            
+            return proximoId;
+        } catch (Exception e){
+            throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
+        }
+    }
+    
     protected void salvarPagamentos(List<VendaFormaPagamento> pagamentos, Connection conn) throws PDVException {
         PreparedStatement ps = null;
         ResultSet rs = null;

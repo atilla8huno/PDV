@@ -45,6 +45,15 @@ public class VendaServico {
         }
     }
     
+    public Integer consultarProximoId() throws PDVException {
+        try {
+            dao = new VendaDAO(conn);
+            return dao.consultarProximoId();
+        } catch (PDVException e) {
+            throw new PDVException(e);
+        }
+    }
+    
     private void salvarPagamentos(List<VendaFormaPagamento> pagamentos, Connection conn) throws PDVException {
         dao.salvarPagamentos(pagamentos, conn);
     }

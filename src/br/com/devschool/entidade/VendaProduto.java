@@ -8,18 +8,21 @@ public class VendaProduto extends Entidade {
     private Integer id;
     private Double quantidade;
     private Double valor;
+    private Double desconto;
     private Venda venda;
     private Produto produto;
 
-    public VendaProduto(Integer id, Double quantidade, Double valor, Venda venda, Produto produto) {
+    public VendaProduto(Integer id, Double quantidade, Double valor, Double desconto, Venda venda, Produto produto) {
         this.id = id;
         this.quantidade = quantidade;
         this.valor = valor;
+        this.desconto = desconto;
         this.venda = venda;
         this.produto = produto;
     }
 
     public VendaProduto() {
+        desconto = 0.0;
     }
 
     @Override
@@ -69,6 +72,14 @@ public class VendaProduto extends Entidade {
         this.produto = produto;
     }
 
+    public Double getDesconto() {
+        return desconto;
+    }
+
+    public void setDesconto(Double desconto) {
+        this.desconto = desconto;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;
