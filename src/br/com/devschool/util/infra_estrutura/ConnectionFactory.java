@@ -24,7 +24,7 @@ public class ConnectionFactory {
     public static Connection getConnection() {
         Connection conn = null;
         try {
-            String usuario = FrameUtil.funcionarioLogado.isTransient() ? "postgres" : FrameUtil.funcionarioLogado.getCargo().getPerfil();
+            String usuario = FrameUtil.FUNCIONARIO_LOGADO.isTransient() ? "postgres" : FrameUtil.FUNCIONARIO_LOGADO.getCargo().getPerfil();
             Class.forName(driver);
             conn = DriverManager.getConnection(url, usuario, senha);
             status = "Conectado!";
