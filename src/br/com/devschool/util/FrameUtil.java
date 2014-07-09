@@ -17,15 +17,15 @@ import javax.swing.border.Border;
 public abstract class FrameUtil extends JFrame {
     
     public FrameUtil() throws PDVException {
-        if (FrameUtil.funcionarioLogado == null || FrameUtil.funcionarioLogado.isTransient()) {
+        if (FrameUtil.FUNCIONARIO_LOGADO == null || FrameUtil.FUNCIONARIO_LOGADO.isTransient()) {
             new LoginFrame().setVisible(Boolean.TRUE);
             dispose();
             throw new PDVException("Erro de Login! Nenhum funcionário logado foi localizado.");
         }
     }
     
-    public static Funcionario funcionarioLogado = new Funcionario();
-    public static Terminal terminalLogado = new Terminal();
+    public static Funcionario FUNCIONARIO_LOGADO = new Funcionario();
+    public static Terminal TERMINAL_LOGADO = new Terminal();
     
     public static Border BORDA_VERMELHA = javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 51, 51));
     public static Border BORDA_PADRAO   = javax.swing.BorderFactory.createLineBorder(new java.awt.Color(175, 175, 175));

@@ -32,7 +32,7 @@ public class VendaPagamentoTableModel extends AbstractTableModel {
         }
     }
     
-    public void limparLista(){
+    public void limpar(){
         getVendaFormaPagamentos().clear();
         fireTableDataChanged();
     }

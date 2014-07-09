@@ -192,7 +192,7 @@ public class PrincipalFrame extends FrameUtil {
 
         jLabelWallpaper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/system.jpg"))); // NOI18N
         jPanel1.add(jLabelWallpaper);
-        jLabelWallpaper.setBounds(0, 0, 800, 580);
+        jLabelWallpaper.setBounds(0, 0, 1920, 1080);
 
         jMenuCadastros.setText("Cadastros");
 
@@ -532,7 +532,7 @@ public class PrincipalFrame extends FrameUtil {
     // End of variables declaration//GEN-END:variables
 
     private void sair() {
-        FrameUtil.funcionarioLogado = new Funcionario();
+        FrameUtil.FUNCIONARIO_LOGADO = new Funcionario();
         new LoginFrame().setVisible(Boolean.TRUE);
         dispose();
     }

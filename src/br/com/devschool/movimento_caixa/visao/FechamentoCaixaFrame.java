@@ -284,7 +284,7 @@ public class FechamentoCaixaFrame extends FrameUtil {
 
                 caixaServico.atualizar(caixa);
 
-                FrameUtil.funcionarioLogado = new Funcionario();
+                FrameUtil.FUNCIONARIO_LOGADO = new Funcionario();
                 new LoginFrame().setVisible(Boolean.TRUE);
                 dispose();
             }

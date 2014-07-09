@@ -122,7 +122,7 @@ public class VendaDAO {
                 conn = ConnectionFactory.getConnection();
             }
             
-            String SQL = "INSERT INTO pdv.venda_produto(id_venda, id_produto, quantidade, valor) VALUES (?, ?, ?, ?)";
+            String SQL = "INSERT INTO pdv.venda_produto(id_venda, id_produto, quantidade, valor, desconto) VALUES (?, ?, ?, ?, ?)";
             
             for (VendaProduto produto : produtos) {
                 ps = conn.prepareStatement(SQL);
@@ -131,6 +131,7 @@ public class VendaDAO {
                 ps.setInt(2, produto.getProduto().getId());
                 ps.setDouble(3, produto.getQuantidade());
                 ps.setDouble(4, produto.getValor());
+                ps.setDouble(5, produto.getDesconto());
 
                 ps.executeUpdate();
                 LogUtil.logSQL(ps);

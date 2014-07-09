@@ -236,7 +236,7 @@ public class LoginFrame extends javax.swing.JFrame {
                         funcionario.getCargo().getPerfil().equals(PerfilEnum.SUPERVISOR.getNome())) {
                     abrirCaixa();
                 }
-                FrameUtil.funcionarioLogado = funcionario;
+                FrameUtil.FUNCIONARIO_LOGADO = funcionario;
                 new PrincipalFrame().setVisible(Boolean.TRUE);
                 dispose();
             }

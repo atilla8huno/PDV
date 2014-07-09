@@ -34,9 +34,9 @@ public class VendaServico {
         try {
             iniciarTransacao();
             
+            entidade = dao.salvar(entidade);
             salvarPagamentos(entidade.getPagamentos(), conn);
             salvarProdutos(entidade.getProdutos(), conn);
-            entidade = dao.salvar(entidade);
             
             commit();
         } catch (Exception e) {

@@ -89,10 +89,10 @@ CREATE TABLE pdv.movimento_caixa (
   FOREIGN KEY (id_funcionario) REFERENCES pdv.funcionario (id_funcionario)
 );
 
-CREATE USER administrador WITH PASSWORD 'root';
-CREATE USER supervisor WITH PASSWORD 'root';
-CREATE USER atendente WITH PASSWORD 'root';
-CREATE USER desenvolvedor WITH PASSWORD 'root';
+CREATE USER administrador WITH PASSWORD '123456';
+CREATE USER supervisor WITH PASSWORD '123456';
+CREATE USER atendente WITH PASSWORD '123456';
+CREATE USER desenvolvedor WITH PASSWORD '123456';
 
 GRANT ALL ON DATABASE desenvolvimento TO administrador;
 GRANT ALL ON SCHEMA pdv TO administrador;
@@ -140,10 +140,50 @@ GRANT ALL ON SEQUENCE pdv.venda_id_venda_seq TO desenvolvedor;
 GRANT ALL ON SEQUENCE pdv.venda_forma_pagamento_id_venda_forma_pagamento_seq TO desenvolvedor;
 GRANT ALL ON SEQUENCE pdv.venda_produto_id_venda_produto_seq TO desenvolvedor;
 
+GRANT ALL ON DATABASE desenvolvimento TO atendente;
 GRANT ALL ON SCHEMA pdv TO atendente;
+GRANT SELECT ON TABLE pdv.cargo TO atendente;
+GRANT SELECT ON TABLE pdv.funcionario TO atendente;
+GRANT SELECT ON TABLE pdv.forma_pagamento TO atendente;
+GRANT SELECT, UPDATE, INSERT ON TABLE pdv.movimento_caixa TO atendente;
+GRANT SELECT ON TABLE pdv.produto TO atendente;
+GRANT SELECT ON TABLE pdv.terminal TO atendente;
+GRANT SELECT ON TABLE pdv.unidade_medida TO atendente;
 GRANT SELECT, INSERT ON TABLE pdv.venda TO atendente;
+GRANT SELECT, INSERT ON TABLE pdv.venda_forma_pagamento TO atendente;
+GRANT SELECT, INSERT ON TABLE pdv.venda_produto TO atendente;
+GRANT ALL ON SEQUENCE pdv.cargo_id_cargo_seq TO atendente;
+GRANT ALL ON SEQUENCE pdv.funcionario_id_funcionario_seq TO atendente;
+GRANT ALL ON SEQUENCE pdv.forma_pagamento_id_forma_pagamento_seq TO atendente;
+GRANT ALL ON SEQUENCE pdv.movimento_caixa_id_movimento_caixa_seq TO atendente;
+GRANT ALL ON SEQUENCE pdv.produto_id_produto_seq TO atendente;
+GRANT ALL ON SEQUENCE pdv.terminal_id_terminal_seq TO atendente;
+GRANT ALL ON SEQUENCE pdv.unidade_medida_id_unidade_medida_seq TO atendente;
 GRANT ALL ON SEQUENCE pdv.venda_id_venda_seq TO atendente;
+GRANT ALL ON SEQUENCE pdv.venda_forma_pagamento_id_venda_forma_pagamento_seq TO atendente;
+GRANT ALL ON SEQUENCE pdv.venda_produto_id_venda_produto_seq TO atendente;
 
-
+GRANT ALL ON DATABASE desenvolvimento TO supervisor;
+GRANT ALL ON SCHEMA pdv TO supervisor;
+GRANT SELECT ON TABLE pdv.cargo TO supervisor;
+GRANT SELECT ON TABLE pdv.funcionario TO supervisor;
+GRANT SELECT ON TABLE pdv.forma_pagamento TO supervisor;
+GRANT SELECT, UPDATE, INSERT ON TABLE pdv.movimento_caixa TO supervisor;
+GRANT SELECT ON TABLE pdv.produto TO supervisor;
+GRANT SELECT ON TABLE pdv.terminal TO supervisor;
+GRANT SELECT ON TABLE pdv.unidade_medida TO supervisor;
+GRANT SELECT, INSERT ON TABLE pdv.venda TO supervisor;
+GRANT SELECT, INSERT ON TABLE pdv.venda_forma_pagamento TO supervisor;
+GRANT SELECT, INSERT ON TABLE pdv.venda_produto TO supervisor;
+GRANT ALL ON SEQUENCE pdv.cargo_id_cargo_seq TO supervisor;
+GRANT ALL ON SEQUENCE pdv.funcionario_id_funcionario_seq TO supervisor;
+GRANT ALL ON SEQUENCE pdv.forma_pagamento_id_forma_pagamento_seq TO supervisor;
+GRANT ALL ON SEQUENCE pdv.movimento_caixa_id_movimento_caixa_seq TO supervisor;
+GRANT ALL ON SEQUENCE pdv.produto_id_produto_seq TO supervisor;
+GRANT ALL ON SEQUENCE pdv.terminal_id_terminal_seq TO supervisor;
+GRANT ALL ON SEQUENCE pdv.unidade_medida_id_unidade_medida_seq TO supervisor;
+GRANT ALL ON SEQUENCE pdv.venda_id_venda_seq TO supervisor;
+GRANT ALL ON SEQUENCE pdv.venda_forma_pagamento_id_venda_forma_pagamento_seq TO supervisor;
+GRANT ALL ON SEQUENCE pdv.venda_produto_id_venda_produto_seq TO supervisor;
 
 ALTER TABLE pdv.venda_produto ADD COLUMN desconto NUMERIC(6,2) DEFAULT '0.00';

@@ -25,6 +25,18 @@ public class VendaProduto extends Entidade {
         desconto = 0.0;
     }
 
+    public Double calculaSubtotal() {
+        Double subtotal = 0.0;
+        if (getDesconto() != null && getDesconto() > 0.0) {
+            Double porcentagemDesconto = (100.0 - getDesconto()) / 100.0;
+            Double valorComDesconto = porcentagemDesconto * (getValor() * getQuantidade());
+            subtotal += valorComDesconto;
+        } else {
+            subtotal += getQuantidade() * produto.getValor();
+        }
+        return subtotal;
+    }
+    
     @Override
     public Integer getId() {
         return id;

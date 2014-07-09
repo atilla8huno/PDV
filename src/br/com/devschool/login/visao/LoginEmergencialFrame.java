@@ -285,12 +285,12 @@ public class LoginEmergencialFrame extends javax.swing.JFrame {
             } else {
                 for (Terminal terminal : terminais) {
                     if (terminal.getNumero().toString().equals(jComboBoxTerminal.getSelectedItem())) {
-                        FrameUtil.terminalLogado = terminal;
+                        FrameUtil.TERMINAL_LOGADO = terminal;
                         break;
                     }
                 }
                 
-                FrameUtil.funcionarioLogado = funcionario;
+                FrameUtil.FUNCIONARIO_LOGADO = funcionario;
                 
                 new PrincipalFrame().setVisible(Boolean.TRUE);
                 dispose();

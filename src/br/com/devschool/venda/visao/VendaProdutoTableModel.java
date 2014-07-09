@@ -82,6 +82,11 @@ public class VendaProdutoTableModel extends AbstractTableModel {
     public void refresh() {
         fireTableDataChanged();
     }
+    
+    public void limpar() {
+        produtos.clear();
+        fireTableDataChanged();
+    }
 
     private String calcularSubtotal(VendaProduto venda) {
         if (venda.getDesconto() != null && venda.getDesconto() > 0.0) {
