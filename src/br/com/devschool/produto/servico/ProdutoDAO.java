@@ -10,8 +10,11 @@ import br.com.devschool.util.template.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProdutoDAO extends DAO<Produto> {
 
@@ -145,6 +148,49 @@ public class ProdutoDAO extends DAO<Produto> {
                 UnidadeMedida unidadeMedida = new UnidadeMedidaServico().consultarPor(rs.getInt(6));
                 
                 produtos.add(new Produto(id, nome, codigo, valor, status, unidadeMedida));
+            }
+            
+            return produtos;
+        } catch (Exception e){
+            throw new PDVException(e);
+        } finally {
+            ConnectionFactory.getCloseConnection(ps, rs);
+        }
+    }
+    
+    protected List<Map<String, Object>> consultarParaRelatorio() throws PDVException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            List<Map<String, Object>> produtos = new ArrayList();
+            if (conn == null || conn.isClosed()) {
+                conn = ConnectionFactory.getConnection();
+            }
+            
+            String SQL = "SELECT id_produto, nome, codigo, valor, status, id_unidade_medida FROM pdv.produto WHERE status = ? LIMIT 20";
+            ps = conn.prepareStatement(SQL);
+            
+            ps.setBoolean(1, Boolean.TRUE);
+            
+            rs = ps.executeQuery();
+            LogUtil.logSQL(ps);
+            
+            while (rs.next()) {
+                Integer id = rs.getInt(1);
+                String nome = rs.getString(2);
+                Integer codigo = rs.getInt(3);
+                Double valor = rs.getDouble(4);
+                UnidadeMedida unidadeMedida = new UnidadeMedidaServico().consultarPor(rs.getInt(6));
+                
+                Map<String, Object> produto = new HashMap();
+                
+                produto.put("id_produto", id);
+                produto.put("nome", nome);
+                produto.put("codigo", codigo);
+                produto.put("valor", NumberFormat.getCurrencyInstance().format(valor));
+                produto.put("unidade_medida", unidadeMedida.getDescricao());
+                
+                produtos.add(produto);
             }
             
             return produtos;

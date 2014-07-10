@@ -3,21 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/terminal/servico/TerminalDAO.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/venda/servico/VendaServico.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/principal/visao/PrincipalFrame.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/movimento_caixa/servico/MovimentoCaixaDAO.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/produto/relatorio/ProdutoReport.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/venda/visao/VendaProdutoTableModel.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/movimento_caixa/servico/MovimentoCaixaServico.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/venda/visao/VendaFrame.java</file>
             <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/util/infra_estrutura/ConnectionFactory.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/entidade/VendaFormaPagamento.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/util/template/Entidade.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/movimento_caixa/visao/FechamentoCaixaFrame.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/login/visao/LoginFrame.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/venda/visao/VendaPagamentoTableModel.java</file>
-            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/produto/visao/ProdutoFrame.java</file>
+            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/principal/visao/PrincipalFrame.java</file>
+            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/produto/servico/ProdutoDAO.java</file>
+            <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/produto/servico/ProdutoServico.java</file>
             <file>file:/C:/Desenvolvimento/workspace%20netbeans/PDV/src/br/com/devschool/util/GeradorRelatorio.java</file>
         </group>
     </open-files>

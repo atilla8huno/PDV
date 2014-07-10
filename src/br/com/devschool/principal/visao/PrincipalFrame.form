@@ -292,10 +292,13 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JButton" name="jButtonRelatorio1">
+        <Component class="javax.swing.JButton" name="jButtonRelatorioProdutos">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Op&#xe7;&#xe3;o de Relat&#xf3;rio"/>
+            <Property name="text" type="java.lang.String" value="Relat&#xf3;rio de Produtos"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonRelatorioProdutosActionPerformed"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="560" y="80" width="200" height="-1"/>
@@ -329,16 +332,6 @@
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="560" y="200" width="200" height="-1"/>
-            </Constraint>
-          </Constraints>
-        </Component>
-        <Component class="javax.swing.JButton" name="jButtonRelatorio5">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Op&#xe7;&#xe3;o de Relat&#xf3;rio"/>
-          </Properties>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="560" y="240" width="200" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>

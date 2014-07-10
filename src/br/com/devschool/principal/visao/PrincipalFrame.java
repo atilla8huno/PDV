@@ -12,6 +12,7 @@ import br.com.devschool.forma_pagamento.visao.FormaPagamentoFrame;
 import br.com.devschool.funcionario.visao.FuncionarioFrame;
 import br.com.devschool.login.visao.LoginFrame;
 import br.com.devschool.movimento_caixa.visao.FechamentoCaixaFrame;
+import br.com.devschool.produto.servico.ProdutoServico;
 import br.com.devschool.produto.visao.ProdutoFrame;
 import br.com.devschool.terminal.visao.TerminalFrame;
 import br.com.devschool.unidade_medida.visao.UnidadeMedidaFrame;
@@ -56,11 +57,10 @@ public class PrincipalFrame extends FrameUtil {
         jButtonCaixa2 = new javax.swing.JButton();
         jButtonVenda = new javax.swing.JButton();
         jButtonLogout = new javax.swing.JButton();
-        jButtonRelatorio1 = new javax.swing.JButton();
+        jButtonRelatorioProdutos = new javax.swing.JButton();
         jButtonRelatorio2 = new javax.swing.JButton();
         jButtonRelatorio3 = new javax.swing.JButton();
         jButtonRelatorio4 = new javax.swing.JButton();
-        jButtonRelatorio5 = new javax.swing.JButton();
         jLabelWallpaper = new javax.swing.JLabel();
         jMenuBarOpcoes = new javax.swing.JMenuBar();
         jMenuCadastros = new javax.swing.JMenu();
@@ -170,9 +170,14 @@ public class PrincipalFrame extends FrameUtil {
         jPanel1.add(jButtonLogout);
         jButtonLogout.setBounds(560, 40, 200, 23);
 
-        jButtonRelatorio1.setText("Opção de Relatório");
-        jPanel1.add(jButtonRelatorio1);
-        jButtonRelatorio1.setBounds(560, 80, 200, 23);
+        jButtonRelatorioProdutos.setText("Relatório de Produtos");
+        jButtonRelatorioProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRelatorioProdutosActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButtonRelatorioProdutos);
+        jButtonRelatorioProdutos.setBounds(560, 80, 200, 23);
 
         jButtonRelatorio2.setText("Opção de Relatório");
         jPanel1.add(jButtonRelatorio2);
@@ -185,10 +190,6 @@ public class PrincipalFrame extends FrameUtil {
         jButtonRelatorio4.setText("Opção de Relatório");
         jPanel1.add(jButtonRelatorio4);
         jButtonRelatorio4.setBounds(560, 200, 200, 23);
-
-        jButtonRelatorio5.setText("Opção de Relatório");
-        jPanel1.add(jButtonRelatorio5);
-        jButtonRelatorio5.setBounds(560, 240, 200, 23);
 
         jLabelWallpaper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/system.jpg"))); // NOI18N
         jPanel1.add(jLabelWallpaper);
@@ -457,6 +458,15 @@ public class PrincipalFrame extends FrameUtil {
         }
     }//GEN-LAST:event_jMenuItemVendaActionPerformed
 
+    private void jButtonRelatorioProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRelatorioProdutosActionPerformed
+
+        try {
+            new ProdutoServico().gerarRelatorio();
+        } catch (Exception e) {
+            addMensagemErro(e.getMessage());
+        }
+    }//GEN-LAST:event_jButtonRelatorioProdutosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -505,11 +515,10 @@ public class PrincipalFrame extends FrameUtil {
     private javax.swing.JButton jButtonFuncionario;
     private javax.swing.JButton jButtonLogout;
     private javax.swing.JButton jButtonProduto;
-    private javax.swing.JButton jButtonRelatorio1;
     private javax.swing.JButton jButtonRelatorio2;
     private javax.swing.JButton jButtonRelatorio3;
     private javax.swing.JButton jButtonRelatorio4;
-    private javax.swing.JButton jButtonRelatorio5;
+    private javax.swing.JButton jButtonRelatorioProdutos;
     private javax.swing.JButton jButtonTerminal;
     private javax.swing.JButton jButtonUnidadeMedida;
     private javax.swing.JButton jButtonVenda;

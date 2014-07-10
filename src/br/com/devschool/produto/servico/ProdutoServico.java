@@ -1,14 +1,18 @@
 package br.com.devschool.produto.servico;
 
 import br.com.devschool.entidade.Produto;
+import br.com.devschool.util.GeradorRelatorio;
 import br.com.devschool.util.PDVException;
 import br.com.devschool.util.infra_estrutura.ConnectionFactory;
 import br.com.devschool.util.template.Servico;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class ProdutoServico extends Servico<Produto> {
     
@@ -199,6 +203,28 @@ public class ProdutoServico extends Servico<Produto> {
             return dao.consultar();
         } catch (Exception e) {
             throw new PDVException(e);
+        }
+    }
+    
+    public List<Map<String, Object>> consultarParaRelatorio() throws PDVException {
+        try {
+            dao = new ProdutoDAO(conn);
+            return dao.consultarParaRelatorio();
+        } catch (Exception e) {
+            throw new PDVException(e);
+        }
+    }
+    
+    public void gerarRelatorio() throws PDVException {
+        try {
+            GeradorRelatorio gerador = new GeradorRelatorio();
+            
+            String arquivo = "resources/jasper/ProdutosReport.jasper";
+            List<Map<String, Object>> itens = consultarParaRelatorio();
+            
+            gerador.gerarRelatorioDesktop(arquivo, itens, null);
+        } catch (Exception e) {
+            throw new PDVException("Erro ao gerar relatório! " + e.getMessage());
         }
     }
 
