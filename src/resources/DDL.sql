@@ -187,3 +187,6 @@ GRANT ALL ON SEQUENCE pdv.venda_forma_pagamento_id_venda_forma_pagamento_seq TO 
 GRANT ALL ON SEQUENCE pdv.venda_produto_id_venda_produto_seq TO supervisor;
 
 ALTER TABLE pdv.venda_produto ADD COLUMN desconto NUMERIC(6,2) DEFAULT '0.00';
+
+INSERT INTO pdv.cargo (nome, perfil) VALUES ('Administrador Geral', 'administrador');
+INSERT INTO pdv.funcionario (nome, data_admissao, status, cpf, senha, id_cargo) VALUES ('Admin', NOW(), TRUE, '000.000.000-00', UPPER(MD5('admin')), 1);
