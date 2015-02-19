@@ -461,7 +461,7 @@ public class PrincipalFrame extends FrameUtil {
     private void jButtonRelatorioProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRelatorioProdutosActionPerformed
 
         try {
-            new ProdutoServico().gerarRelatorio();
+            new ProdutoServico().gerarRelatorioJRXML();
         } catch (Exception e) {
             addMensagemErro(e.getMessage());
         }
