@@ -7,6 +7,7 @@ import br.com.devschool.util.PDVException;
 import br.com.devschool.util.infra_estrutura.ConnectionFactory;
 import br.com.devschool.util.template.Servico;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -17,7 +18,9 @@ import java.util.logging.Logger;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.engine.xml.JRXmlWriter;
 
 public class ProdutoServico extends Servico<Produto> {
     
@@ -221,11 +224,11 @@ public class ProdutoServico extends Servico<Produto> {
     }
     
     public void gerarRelatorio() throws PDVException {
+        final String arquivo = "/resources/jasper/ProdutosReport.jasper";
+        
         try {
-            final String arquivo = "/resources/jasper/ProdutosReport.jasper";
-            List<Map<String, Object>> itens = consultarParaRelatorio();
-            
-            GeradorRelatorio.gerarRelatorioDesktop(getClass().getResourceAsStream(arquivo), itens, null);
+            GeradorRelatorio.gerarRelatorioDesktop(
+                    getClass().getResourceAsStream(arquivo), consultarParaRelatorio(), null);
         } catch (Exception e) {
             throw new PDVException("Erro ao gerar relatório! " + e.getMessage());
         }
@@ -234,10 +237,9 @@ public class ProdutoServico extends Servico<Produto> {
     public void gerarRelatorioJRXML() throws PDVException {
         final String arquivo = "/resources/jasper/ProdutosReport.jrxml";
         final String iReportsVersion = JasperCompileManager.class.getPackage().getImplementationVersion();
+        JasperReport relatorio;
         
         try {
-            JasperReport relatorio = null;
-            
             if (iReportsVersion.startsWith("2.")) {
                 relatorio = JasperCompileManager.compileReport(
                         new JasperLegadoInputStream(getClass().getResourceAsStream(arquivo)));
@@ -245,9 +247,28 @@ public class ProdutoServico extends Servico<Produto> {
                 relatorio = JasperCompileManager.compileReport(getClass().getResourceAsStream(arquivo));
             }
             
-            List<Map<String, Object>> itens = consultarParaRelatorio();
+            GeradorRelatorio.gerarRelatorioDesktop(relatorio, consultarParaRelatorio(), null);
+        } catch (Exception e) {
+            throw new PDVException("Erro ao gerar relatório! " + e.getMessage());
+        }
+    }
+    
+    public void gerarRelatorioJasper() throws PDVException {
+        final String arquivo = "/resources/jasper/ProdutosReport.jasper";
+        final String iReportsVersion = JasperCompileManager.class.getPackage().getImplementationVersion();
+        
+        try {
+            JasperReport relatorio = (JasperReport) JRLoader.loadObject(getClass().getResourceAsStream(arquivo));
+            String jrxml = JRXmlWriter.writeReport(relatorio, "UTF-8");
             
-            GeradorRelatorio.gerarRelatorioDesktop(relatorio, itens, null);
+            if (iReportsVersion.startsWith("2.")) {
+                relatorio = JasperCompileManager.compileReport(
+                        new JasperLegadoInputStream(new ByteArrayInputStream(jrxml.getBytes())));
+            } else {
+                relatorio = JasperCompileManager.compileReport(new ByteArrayInputStream(jrxml.getBytes()));
+            }
+            
+            GeradorRelatorio.gerarRelatorioDesktop(relatorio, consultarParaRelatorio(), null);
         } catch (Exception e) {
             throw new PDVException("Erro ao gerar relatório! " + e.getMessage());
         }

@@ -1,6 +1,5 @@
 package br.com.devschool.util;
 
-import br.com.devschool.produto.servico.ProdutoServico;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.FilterInputStream;
@@ -28,37 +27,42 @@ public class JasperLegadoInputStream extends FilterInputStream {
      * @param is        O InputStream desenvolvido nas versões mais recentes
      */
     public JasperLegadoInputStream(final InputStream is) {
-        super(convertToLegacyFormat(is));
+        super(converterParaFormatoLegado(is));
     }
 
-    private static InputStream convertToLegacyFormat(final InputStream is) {
-        Document document = convertInputStreamToDOM(is);
+    private static InputStream converterParaFormatoLegado(final InputStream is) {
+        Document document = converterInputStreamParaDOM(is);
         document.getDocumentElement().removeAttribute("xmlns");
         document.getDocumentElement().removeAttribute("xmlns:xsi");
         document.getDocumentElement().removeAttribute("xsi:schemaLocation");
         document.getDocumentElement().removeAttribute("uuid");
         
-        String source = addDocTypeAndConvertDOMToString(document);
+        String source = addDocTypeEConverterDOMParaString(document);
         
-        Logger.getLogger(JasperLegadoInputStream.class.getName()).log(Level.INFO, source);
+//      Logger.getLogger(JasperLegadoInputStream.class.getName()).log(Level.INFO, source);
         
-        source = removeAttributeFromTag(source, "band", "splitType");
-        source = removeAttributeFromTag(source, "reportElement", "uuid");
-        source = addAttributeToTag(source, "imageExpression", "class=\"java.awt.Image\"");
+        source = substituirAtributoDaTag(source, "band", "splitType", "isSplitAllowed=\"true\"");
+        source = removerAtributoDaTag(source, "reportElement", "uuid");
+        source = addAtributoNaTag(source, "imageExpression", "class=\"java.awt.Image\"");
         
-        Logger.getLogger(JasperLegadoInputStream.class.getName()).log(Level.INFO, "\n\n\n=====\n\n\n\n" +source);
+//      Logger.getLogger(JasperLegadoInputStream.class.getName()).log(Level.INFO, "\n\n\n=====\n\n\n\n" +source);
         
-        return convertStringToInputStream(source);
+        return converterStringParaInputStream(source);
     }
     
-    private static String removeAttributeFromTag(String source, String tag, String attr) {
+    private static String removerAtributoDaTag(String source, String tag, String attr) {
         return source.replaceAll("(<"+tag+" .*)("+attr+"=\"[^\"]*\")", "$1");
     }
-    private static String addAttributeToTag(String source, String tag, String attr) {
+    
+    private static String substituirAtributoDaTag(String source, String tag, String oldAttr, String newAttr) {
+        return source.replaceAll("(<"+tag+" .*)("+oldAttr+"=\"[^\"]*\")", "$1"+newAttr);
+    }
+    
+    private static String addAtributoNaTag(String source, String tag, String attr) {
         return source.replaceAll("(<"+tag+")", "$1 "+attr);
     }
-
-    private static Document convertInputStreamToDOM(final InputStream is){
+    
+    private static Document converterInputStreamParaDOM(final InputStream is){
         Document document = null;
         BufferedInputStream bis = new BufferedInputStream(is);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -74,7 +78,7 @@ public class JasperLegadoInputStream extends FilterInputStream {
         return document;
     }
 
-    private static String addDocTypeAndConvertDOMToString(Document document){
+    private static String addDocTypeEConverterDOMParaString(Document document){
 
         TransformerFactory transfac = TransformerFactory.newInstance();
         Transformer trans = null;
@@ -100,7 +104,7 @@ public class JasperLegadoInputStream extends FilterInputStream {
         return sw.toString();
     }
 
-    private static InputStream convertStringToInputStream(String template) {
+    private static InputStream converterStringParaInputStream(String template) {
         return new ByteArrayInputStream(template.getBytes());
     }
 }

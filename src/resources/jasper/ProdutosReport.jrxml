@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
-<!-- 2015-02-19T18:30:18 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProdutosReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0ea9fc25-c8ff-4cdd-a26d-0ad9f7591192">
+<!-- 2015-02-20T14:08:23 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProdutosReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0161f372-c61b-4d65-b994-32aa4c52b411">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -21,22 +21,22 @@
 	<title>
 		<band height="73" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText" x="0" y="0" width="555" height="46" uuid="81486e4e-8ca9-4f49-879e-6f5d8de2bf68"/>
+				<reportElement key="staticText" x="0" y="0" width="555" height="46" uuid="23661e61-890a-4fd8-8c4c-d361921c66d2"/>
 				<textElement textAlignment="Center">
 					<font size="24" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Relatório de Produtos.]]></text>
+				<text><![CDATA[Relatório de Produtos..]]></text>
 			</staticText>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="35" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText" x="0" y="0" width="161" height="20" uuid="a82e0971-c30a-49da-9866-b0722eb21d52"/>
+				<reportElement key="staticText" x="0" y="0" width="161" height="20" uuid="17b96632-4356-4314-8ec0-78a1dd5b4920"/>
 				<text><![CDATA[Produtos Cadastrados]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="455" y="0" width="100" height="20" uuid="89b6d90d-da58-4deb-8ffd-816c73e3c892"/>
+				<reportElement key="textField" x="455" y="0" width="100" height="20" uuid="b0ae2094-dce0-479d-8ec3-5ace690d5237"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
 		</band>
@@ -44,23 +44,23 @@
 	<columnHeader>
 		<band height="45" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText" x="0" y="12" width="39" height="20" uuid="3bdec77d-23a0-49b8-812a-0618326269fa"/>
+				<reportElement key="staticText" x="0" y="12" width="39" height="20" uuid="a10f0875-df34-4855-8dd0-230f3c199cc0"/>
 				<text><![CDATA[Id]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText" x="39" y="12" width="225" height="20" uuid="88b53638-40f8-4e21-815d-34e1817cfb86"/>
+				<reportElement key="staticText" x="39" y="12" width="225" height="20" uuid="9bb6e559-15cb-4309-846b-054859762785"/>
 				<text><![CDATA[Nome do Produto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText" x="264" y="12" width="80" height="20" uuid="0d674dbd-5d58-48f3-8c42-e8b869a37cdf"/>
+				<reportElement key="staticText" x="264" y="12" width="80" height="20" uuid="58d4b8b2-0b5b-47d2-8659-f7098d7206ae"/>
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText" x="344" y="12" width="69" height="20" uuid="062f4e3c-b0f4-4afc-8029-a119b64b245f"/>
+				<reportElement key="staticText" x="344" y="12" width="69" height="20" uuid="7265e414-58b5-4670-be65-0657aba366d2"/>
 				<text><![CDATA[Valor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText" x="413" y="12" width="142" height="20" uuid="c4dce330-82bc-4d76-b853-b9684d1afa5d"/>
+				<reportElement key="staticText" x="413" y="12" width="142" height="20" uuid="ad7762f0-2f42-4ce1-92cd-ebe269323ac4"/>
 				<text><![CDATA[Unidade de Medida]]></text>
 			</staticText>
 		</band>
@@ -68,27 +68,27 @@
 	<detail>
 		<band height="77" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="0" y="10" width="39" height="20" uuid="5646be94-07bb-4c31-b064-57afa25c1f2d"/>
+				<reportElement key="textField" x="0" y="10" width="39" height="20" uuid="3134c73c-b07f-4eb3-9111-61764a14919f"/>
 				<textFieldExpression><![CDATA[$F{id_produto}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="39" y="10" width="225" height="20" uuid="7f46a138-cef0-4268-a5c0-821a04a89442"/>
+				<reportElement key="textField" x="39" y="10" width="225" height="20" uuid="0d1648c2-f905-4b2d-ab96-70a5a08d91d3"/>
 				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="264" y="10" width="80" height="20" uuid="b97b2b79-d89c-47c6-8c1c-6129afc55bf8"/>
+				<reportElement key="textField" x="264" y="10" width="80" height="20" uuid="63c5eb80-117e-4943-baa9-24f1cea6e44e"/>
 				<textFieldExpression><![CDATA[$F{codigo}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="344" y="10" width="69" height="20" uuid="116dd9b9-ee02-473d-b3a7-9f570b5ba97b"/>
+				<reportElement key="textField" x="344" y="10" width="69" height="20" uuid="0d4df44c-381a-477d-850b-fe567a31f6db"/>
 				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="413" y="10" width="142" height="20" uuid="539fa89d-a8de-424d-a0e7-acba74805a24"/>
+				<reportElement key="textField" x="413" y="10" width="142" height="20" uuid="1cbc4a85-85d3-461d-9cb4-f9fb94d2a4d2"/>
 				<textFieldExpression><![CDATA[$F{unidade_medida}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="RetainShape">
-				<reportElement key="barcode-1" x="204" y="36" width="339" height="34" uuid="1784ea37-000b-4c5a-83b7-9816061e6901"/>
+				<reportElement key="barcode-1" x="204" y="37" width="342" height="32" uuid="ea5289db-73d6-468c-8572-1093925a8574"/>
 				<imageExpression><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(8,$F{codigo}.toString(),false,false,null,0,0)]]></imageExpression>
 			</image>
 		</band>
@@ -99,12 +99,12 @@
 	<pageFooter>
 		<band height="54" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="413" y="29" width="84" height="20" uuid="894351f8-eb1e-48a6-b759-d85f9c10a40b"/>
+				<reportElement key="textField" x="413" y="29" width="84" height="20" uuid="53751870-5a6d-407d-a5c0-f31fb54c866d"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField" x="497" y="29" width="40" height="20" uuid="ae96b6c5-1f69-4a21-b436-f5cbd7d30a1e"/>
+				<reportElement key="textField" x="497" y="29" width="40" height="20" uuid="9a893df3-2996-4b22-93d0-1ce0682ba6de"/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
